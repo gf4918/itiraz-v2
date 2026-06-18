@@ -1,0 +1,15 @@
+# Temporary office files
+~$*.docx
+~$*.doc
+~$*.xlsx
+~$*.xls
+
+# OS files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Logs and databases
+*.log
+*.sql
+*.sqlite

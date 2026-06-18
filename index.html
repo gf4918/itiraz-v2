@@ -1,0 +1,1910 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aile Hekimliği Performans İtiraz Formu Doldurucu</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- FontAwesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Libraries (CDN) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <!-- Base64 Template Documents -->
+    <script src="template_docx.js"></script>
+    <script src="template_ek8_docx.js"></script>
+
+    <style>
+        /* CSS RESET & VARIABLES */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        :root {
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+            --panel-bg: rgba(30, 41, 59, 0.7);
+            --panel-border: rgba(255, 255, 255, 0.08);
+            --accent: #0ea5e9;
+            --accent-hover: #38bdf8;
+            --accent-glow: rgba(14, 165, 233, 0.3);
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --input-bg: rgba(15, 23, 42, 0.6);
+            --input-border: rgba(255, 255, 255, 0.1);
+            --input-focus-border: #0ea5e9;
+            --success: #10b981;
+            --danger: #ef4444;
+            --font-ui: 'Inter', sans-serif;
+            --font-display: 'Outfit', sans-serif;
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+        }
+
+        body {
+            font-family: var(--font-ui);
+            background: var(--bg-gradient);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+        header {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--panel-border);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-logo {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .header-logo i {
+            font-size: 1.75rem;
+            color: var(--accent);
+            text-shadow: 0 0 10px var(--accent-glow);
+        }
+
+        .header-logo h1 {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.025em;
+            background: linear-gradient(to right, #f8fafc, #94a3b8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        /* BUTTONS */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            font-family: var(--font-ui);
+            font-size: 0.875rem;
+            font-weight: 600;
+            padding: 0.625rem 1.25rem;
+            border-radius: 8px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #ffffff;
+            box-shadow: 0 4px 14px var(--accent-glow);
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-hover);
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.4);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-main);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: #ffffff;
+            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.2);
+        }
+
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        /* MAIN CONTAINER */
+        .app-container {
+            display: flex;
+            flex: 1;
+            height: calc(100vh - 65px);
+            overflow: hidden;
+        }
+
+        /* FORM PANEL (LEFT) */
+        .form-panel {
+            width: 45%;
+            min-width: 450px;
+            max-width: 650px;
+            background: var(--panel-bg);
+            border-right: 1px solid var(--panel-border);
+            backdrop-filter: blur(20px);
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .form-section {
+            background: rgba(15, 23, 42, 0.4);
+            border: 1px solid var(--panel-border);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .form-section.hidden-section {
+            display: none !important;
+        }
+
+        .form-section-header {
+            padding: 1rem 1.25rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid var(--panel-border);
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 0.75rem;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .form-section-header:hover {
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .form-section-header i.section-icon {
+            color: var(--accent);
+            font-size: 1.1rem;
+        }
+
+        .form-section-header h2 {
+            font-family: var(--font-display);
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--text-main);
+            flex-grow: 1;
+        }
+
+        .form-section-header i.toggle-icon {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            transition: transform 0.3s ease;
+        }
+
+        .form-section.collapsed .form-section-header i.toggle-icon {
+            transform: rotate(-90deg);
+        }
+
+        .form-section-body {
+            padding: 1.25rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            transition: max-height 0.3s ease-out;
+            max-height: 1200px;
+            overflow: hidden;
+        }
+
+        .form-section.collapsed .form-section-body {
+            max-height: 0;
+            padding-top: 0;
+            padding-bottom: 0;
+            border: none;
+        }
+
+        .full-width {
+            grid-column: span 2;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.375rem;
+            transition: all 0.3s ease;
+        }
+
+        .input-group.hidden-input {
+            display: none !important;
+        }
+
+        .input-group label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--text-muted);
+            letter-spacing: 0.025em;
+        }
+
+        .input-control {
+            font-family: var(--font-ui);
+            font-size: 0.875rem;
+            background: var(--input-bg);
+            border: 1px solid var(--input-border);
+            color: var(--text-main);
+            padding: 0.625rem 0.75rem;
+            border-radius: 8px;
+            outline: none;
+            transition: all 0.2s ease;
+            width: 100%;
+        }
+
+        .input-control:focus {
+            border-color: var(--input-focus-border);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+        }
+
+        .input-control[readonly] {
+            background: rgba(15, 23, 42, 0.3);
+            border-color: rgba(255, 255, 255, 0.05);
+            color: #cbd5e1;
+            cursor: not-allowed;
+        }
+
+        textarea.input-control {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        select.input-control {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 1rem;
+            padding-right: 2.25rem;
+        }
+
+        select.input-control option {
+            background: #1e293b;
+            color: #f8fafc;
+        }
+
+        /* CHECKBOX SELECTIONS */
+        .checkbox-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            border: 1.5px solid var(--input-border);
+            border-radius: 4px;
+            background: var(--input-bg);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+
+        .checkbox-item input[type="checkbox"]:checked {
+            border-color: var(--accent);
+            background: var(--accent);
+        }
+
+        .checkbox-item input[type="checkbox"]:checked::after {
+            content: "\f00c";
+            font-family: "Font Awesome 6 Free";
+            font-weight: 900;
+            color: #ffffff;
+            font-size: 0.65rem;
+        }
+
+        .checkbox-item span {
+            font-size: 0.8rem;
+            color: var(--text-main);
+        }
+
+        /* VACCINES SECTION */
+        .vaccines-container {
+            grid-column: span 2;
+            border-top: 1px dashed rgba(255, 255, 255, 0.08);
+            padding-top: 1rem;
+            margin-top: 0.5rem;
+            display: none;
+        }
+
+        .vaccines-container.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .vaccines-title {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--accent);
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .vaccines-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
+        }
+
+        /* PREVIEW PANEL (RIGHT) */
+        .preview-panel {
+            flex: 1;
+            background: #0f172a;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 1.5rem;
+            position: relative;
+        }
+
+        /* PREVIEW TABS */
+        .preview-tabs {
+            display: flex;
+            background: rgba(15, 23, 42, 0.5);
+            padding: 4px;
+            border-radius: 10px;
+            border: 1px solid var(--panel-border);
+            width: fit-content;
+            margin-bottom: 0.5rem;
+        }
+
+        .tab-btn {
+            font-family: var(--font-ui);
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            background: transparent;
+            border: none;
+            padding: 0.5rem 1.25rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .tab-btn:hover {
+            color: var(--text-main);
+        }
+
+        .tab-btn.active {
+            color: #ffffff;
+            background: var(--accent);
+            box-shadow: 0 4px 10px var(--accent-glow);
+        }
+
+        /* A4 PAGE STYLE */
+        .a4-page {
+            width: 794px; /* Exact 96 DPI A4 width */
+            min-height: 1123px; /* Exact 96 DPI A4 height */
+            background: #ffffff;
+            color: #000000;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            padding: 20mm 15mm;
+            font-family: 'Times New Roman', Times, serif;
+            font-size: 11pt;
+            line-height: 1.35;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        /* DOCUMENT PREVIEW TEXT ELEMENTS */
+        .doc-header-top {
+            display: flex;
+            justify-content: space-between;
+            font-size: 9pt;
+            margin-bottom: 1.5rem;
+        }
+        
+        .doc-date-block {
+            text-align: right;
+            max-width: 320px;
+            line-height: 1.2;
+        }
+        
+        .doc-date-val {
+            font-weight: bold;
+            font-size: 11pt;
+            letter-spacing: 1px;
+        }
+        
+        .doc-date-sub {
+            font-size: 7.5pt;
+            color: #444444;
+            display: block;
+            margin-top: 2px;
+        }
+
+        .doc-title-block {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-weight: bold;
+            line-height: 1.4;
+        }
+
+        .doc-target {
+            font-size: 11pt;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+        }
+
+        .doc-subject-title {
+            font-size: 11.5pt;
+            margin-top: 1.5rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+            text-decoration: underline;
+        }
+
+        .doc-period {
+            margin-bottom: 0.75rem;
+            font-size: 11pt;
+        }
+
+        .doc-period-val {
+            font-weight: bold;
+            border-bottom: 1px solid #000;
+            display: inline-block;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .doc-section-title {
+            text-align: center;
+            font-weight: bold;
+            margin-top: 1.25rem;
+            margin-bottom: 0.75rem;
+            font-size: 11pt;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        /* CHECKBOXES IN DOC */
+        .doc-checkbox-group {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+
+        .doc-cb-char {
+            font-family: monospace;
+            font-size: 12.5pt;
+            font-weight: bold;
+            margin-right: 2px;
+            display: inline-block;
+        }
+
+        .doc-cb-item {
+            display: inline-block;
+            margin-right: 14px;
+            white-space: nowrap;
+        }
+
+        .doc-vaccines-block {
+            padding-left: 15px;
+            margin-bottom: 1rem;
+            font-size: 10pt;
+            line-height: 1.6;
+        }
+
+        /* FORM FIELD ROWS */
+        .doc-fields-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.25rem;
+        }
+
+        .doc-fields-table td {
+            padding: 3px 0;
+            vertical-align: top;
+        }
+
+        .doc-fields-table td.label-cell {
+            width: 42%;
+            font-weight: bold;
+        }
+
+        .doc-fields-table td.separator-cell {
+            width: 2%;
+            text-align: center;
+        }
+
+        .doc-fields-table td.value-cell {
+            width: 56%;
+            border-bottom: 1px dashed #777777;
+            padding-left: 5px;
+            font-weight: normal;
+            min-height: 20px;
+        }
+
+        .doc-explanation-block {
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .doc-explanation-label {
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+
+        .doc-explanation-lines {
+            position: relative;
+            background-image: linear-gradient(to bottom, transparent 94%, #777777 95%);
+            background-size: 100% 24px;
+            line-height: 24px;
+            min-height: 120px;
+            text-align: justify;
+            padding: 0 4px;
+            white-space: pre-wrap;
+        }
+
+        .doc-statement {
+            text-align: justify;
+            margin-bottom: 1.5rem;
+            text-indent: 1.5cm;
+            line-height: 1.4;
+        }
+
+        /* PHYSICIAN / SIGNATURE SECTION */
+        .doc-signature-section {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            page-break-inside: avoid;
+        }
+
+        .doc-sig-left {
+            width: 50%;
+        }
+
+        .doc-sig-right {
+            width: 40%;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
+            padding-top: 10px;
+        }
+
+        .doc-sig-right-title {
+            font-weight: bold;
+            margin-bottom: 30px;
+        }
+
+        .doc-sig-right-sub {
+            font-size: 10pt;
+        }
+
+        /* DISTRICT HEALTH DEPT EVALUATION */
+        .doc-evaluation-section {
+            border-top: 1px solid #000000;
+            padding-top: 1rem;
+            margin-top: 1.5rem;
+            page-break-inside: avoid;
+        }
+
+        .doc-evaluation-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .doc-evaluation-lines {
+            border-bottom: 1px dashed #777777;
+            min-height: 40px;
+            margin-bottom: 1rem;
+        }
+
+        .doc-evaluation-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .doc-evaluation-cbs {
+            width: 60%;
+        }
+
+        .doc-evaluation-sig {
+            width: 35%;
+            text-align: center;
+        }
+
+        /* FOOTNOTES */
+        .doc-footnotes {
+            margin-top: 2rem;
+            border-top: 0.5px solid #333;
+            padding-top: 5px;
+            font-size: 8.5pt;
+            line-height: 1.3;
+        }
+
+        .doc-footnotes p {
+            margin-bottom: 4px;
+            text-align: justify;
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* PRINT STYLE SHEET */
+        @media print {
+            body {
+                background: #ffffff;
+                color: #000000;
+            }
+            header, .form-panel, .preview-tabs {
+                display: none !important;
+            }
+            .preview-panel {
+                padding: 0 !important;
+                background: #ffffff !important;
+                overflow: visible !important;
+                display: block !important;
+            }
+            .a4-page {
+                box-shadow: none !important;
+                width: 100% !important;
+                height: auto !important;
+                min-height: 0 !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .a4-page:not(.print-active) {
+                display: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <div class="header-logo">
+            <i class="fa-solid fa-file-medical"></i>
+            <div>
+                <h1>Performans İtiraz Formu Doldurucu</h1>
+            </div>
+        </div>
+        <div class="header-actions">
+            <button class="btn btn-secondary" onclick="loadDefaults()">
+                <i class="fa-solid fa-arrow-rotate-left"></i> Örnek Veri Yükle
+            </button>
+            <button class="btn btn-secondary" onclick="clearForm()">
+                <i class="fa-solid fa-trash-can"></i> Temizle
+            </button>
+            <button class="btn btn-primary" onclick="exportDocx()">
+                <i class="fa-solid fa-file-word"></i> Word İndir
+            </button>
+            <button class="btn btn-success" onclick="exportPdf()">
+                <i class="fa-solid fa-file-pdf"></i> PDF İndir
+            </button>
+            <button class="btn btn-secondary" onclick="window.print()">
+                <i class="fa-solid fa-print"></i> Yazdır
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN APP WRAPPER -->
+    <div class="app-container">
+        
+        <!-- FORM INPUT PANEL (LEFT) -->
+        <div class="form-panel">
+            
+            <!-- SECTION 1: GENEL BİLGİLER -->
+            <div class="form-section">
+                <div class="form-section-header" onclick="toggleSection(this)">
+                    <i class="fa-solid fa-circle-info section-icon"></i>
+                    <h2>1. Genel Bilgiler</h2>
+                    <i class="fa-solid fa-chevron-up toggle-icon"></i>
+                </div>
+                <div class="form-section-body">
+                    <div class="input-group">
+                        <label for="kesinti_donemi">Kesinti Dönemi (Ay/Yıl)</label>
+                        <input type="text" id="kesinti_donemi" class="input-control" placeholder="Örn: 06/2026">
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 2: İTİRAZ EDİLEN KONU -->
+            <div class="form-section">
+                <div class="form-section-header" onclick="toggleSection(this)">
+                    <i class="fa-solid fa-clipboard-list section-icon"></i>
+                    <h2>2. İtiraz Edilen Konu</h2>
+                    <i class="fa-solid fa-chevron-up toggle-icon"></i>
+                </div>
+                <div class="form-section-body">
+                    <div class="checkbox-grid full-width">
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="cb_gebe" onchange="onObjectionSubjectChange()">
+                            <span>Gebe İzlemi</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="cb_cocuk" onchange="onObjectionSubjectChange()">
+                            <span>Çocuk İzlemi</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="cb_bebek" onchange="onObjectionSubjectChange()">
+                            <span>Bebek İzlemi</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="cb_lohusa" onchange="onObjectionSubjectChange()">
+                            <span>Lohusa İzlemi</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="cb_bagisiklama" onchange="onObjectionSubjectChange()">
+                            <span>Bağışıklama Hizmetleri</span>
+                        </label>
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="cb_diger" onchange="onObjectionSubjectChange()">
+                            <span>Diğer</span>
+                        </label>
+                    </div>
+
+                    <!-- VACCINES DETAIL SECTION (CONDITIONAL) -->
+                    <div class="vaccines-container" id="vaccines_panel">
+                        <div class="vaccines-title">Bağışıklama Aşı Detayları</div>
+                        <div class="vaccines-grid">
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="cb_hepb">
+                                <span>Hep-B</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="cb_bcg">
+                                <span>BCG</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="cb_kpa">
+                                <span>KPA</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="cb_dabt">
+                                <span>DaBT-İPA-Hib-Hep-B</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="cb_opa">
+                                <span>OPA</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="cb_sucicegi">
+                                <span>Suçiçeği</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="cb_kkk">
+                                <span>KKK</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="cb_hepa">
+                                <span>Hep-A</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="cb_dabt_ipa">
+                                <span>DaBT-İPA</span>
+                            </label>
+                            <label class="checkbox-item">
+                                <input type="checkbox" id="cb_td">
+                                <span>Td</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 3: PERFORMANS KESİNTİSİNE ESAS TEŞKİL EDEN KİŞİ -->
+            <div class="form-section">
+                <div class="form-section-header" onclick="toggleSection(this)">
+                    <i class="fa-solid fa-user-injured section-icon"></i>
+                    <h2>3. Esas Teşkil Eden Kişi Bilgileri</h2>
+                    <i class="fa-solid fa-chevron-up toggle-icon"></i>
+                </div>
+                <div class="form-section-body">
+                    <!-- Always visible -->
+                    <div class="input-group">
+                        <label for="tc_no">Kişi T.C. Kimlik No</label>
+                        <input type="text" id="tc_no" class="input-control" maxlength="11" placeholder="11 Haneli TC">
+                    </div>
+                    <div class="input-group">
+                        <label for="adi_soyadi">Kişi Adı Soyadı</label>
+                        <input type="text" id="adi_soyadi" class="input-control" placeholder="Ad Soyad">
+                    </div>
+                    <div class="input-group">
+                        <label for="kayit_tarihi">Aile Hekimine Kesin Kayıt Tarihi</label>
+                        <input type="text" id="kayit_tarihi" class="input-control" placeholder="GG.AA.YYYY">
+                    </div>
+                    <div class="input-group">
+                        <label for="tel_no">İletişim (Telefon No)</label>
+                        <input type="text" id="tel_no" class="input-control" placeholder="05XXXXXXXXX">
+                    </div>
+
+                    <!-- Conditionally visible fields -->
+                    <div class="input-group hidden-input" id="wrapper_anne_tc">
+                        <label for="anne_tc">Anne T.C. Kimlik No <span style="color: var(--accent); font-weight: bold;">*</span></label>
+                        <input type="text" id="anne_tc" class="input-control" maxlength="11" placeholder="Bebek-Çocuk-Bağışıklama için">
+                    </div>
+                    <div class="input-group hidden-input" id="wrapper_dogum_tarihi">
+                        <label for="dogum_tarihi">Kişi Doğum Tarihi <span style="color: var(--accent); font-weight: bold;">*</span></label>
+                        <input type="text" id="dogum_tarihi" class="input-control" placeholder="Bebek-Çocuk-Bağışıklama için">
+                    </div>
+                    <div class="input-group hidden-input" id="wrapper_sat">
+                        <label for="sat">Son Adet Tarihi (SAT) <span style="color: var(--accent); font-weight: bold;">*</span></label>
+                        <input type="text" id="sat" class="input-control" placeholder="Gebe İzlemi için">
+                    </div>
+                    <div class="input-group hidden-input" id="wrapper_dogum_tarihi_lohusa">
+                        <label for="dogum_tarihi_lohusa">Gebenin Doğum Yaptığı Tarih <span style="color: var(--accent); font-weight: bold;">*</span></label>
+                        <input type="text" id="dogum_tarihi_lohusa" class="input-control" placeholder="Lohusa İzlemi için">
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 4: İTİRAZ NEDENİ AÇIKLAMA -->
+            <div class="form-section">
+                <div class="form-section-header" onclick="toggleSection(this)">
+                    <i class="fa-solid fa-comment-medical section-icon"></i>
+                    <h2>4. İtiraz Gerekçesi / Açıklama</h2>
+                    <i class="fa-solid fa-chevron-up toggle-icon"></i>
+                </div>
+                <div class="form-section-body">
+                    <div class="input-group full-width">
+                        <label for="itiraz_nedeni">Açıklama Detayı</label>
+                        <textarea id="itiraz_nedeni" class="input-control" placeholder="İtiraz gerekçesini detaylıca yazınız..."></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 5: AİLE HEKİMLİĞİ BİRİMİ VE HEKİM BİLGİLERİ -->
+            <div class="form-section">
+                <div class="form-section-header" onclick="toggleSection(this)">
+                    <i class="fa-solid fa-user-doctor section-icon"></i>
+                    <h2>5. Birim & Hekim Bilgileri</h2>
+                    <i class="fa-solid fa-chevron-up toggle-icon"></i>
+                </div>
+                <div class="form-section-body">
+                    <div class="input-group full-width">
+                        <label for="ah_unit_select">Aile Hekimliği Birimi Seçimi</label>
+                        <select id="ah_unit_select" class="input-control" onchange="onAhUnitChange()">
+                            <!-- Will be populated dynamically from CONFIG -->
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Hekim Adı Soyadı</label>
+                        <input type="text" id="hekim_adi_soyadi" class="input-control" readonly>
+                    </div>
+                    <div class="input-group">
+                        <label>Hekim T.C. Kimlik No</label>
+                        <input type="text" id="hekim_tc" class="input-control" readonly>
+                    </div>
+                </div>
+            </div>
+
+            <!-- SECTION 6: EK-8 ONAM FORMU BİLGİLERİ (CONDITIONAL ON VACCINE CHECKBOX) -->
+            <div class="form-section hidden-section" id="wrapper_ek8_section">
+                <div class="form-section-header" onclick="toggleSection(this)">
+                    <i class="fa-solid fa-file-signature section-icon"></i>
+                    <h2>6. Ek-8 Onam Formu Bilgileri</h2>
+                    <i class="fa-solid fa-chevron-up toggle-icon"></i>
+                </div>
+                <div class="form-section-body">
+                    <div class="input-group">
+                        <label for="ek8_onam_veren_adi">Onam Veren (Veli/Hasta) Ad Soyad</label>
+                        <input type="text" id="ek8_onam_veren_adi" class="input-control" placeholder="Örn: SULTAN YILDIRIM">
+                    </div>
+                    <div class="input-group">
+                        <label for="ek8_onam_veren_tc">Onam Veren T.C. Kimlik No</label>
+                        <input type="text" id="ek8_onam_veren_tc" class="input-control" maxlength="11" placeholder="Veli T.C.">
+                    </div>
+                    <div class="input-group">
+                        <label for="ek8_kisi_adi">Aşı Yapılacak Kişi Ad Soyad</label>
+                        <input type="text" id="ek8_kisi_adi" class="input-control" placeholder="Kişi/Çocuk Adı Soyadı">
+                    </div>
+                    <div class="input-group">
+                        <label for="ek8_veli_tel">Veli/Hasta Telefon Numarası</label>
+                        <input type="text" id="ek8_veli_tel" class="input-control" placeholder="05XXXXXXXXX">
+                    </div>
+                    <div class="input-group full-width">
+                        <label for="ek8_veli_adres">Veli/Hasta Adres Bilgisi</label>
+                        <input type="text" id="ek8_veli_adres" class="input-control" placeholder="Adres">
+                    </div>
+                    <!-- Custom Signature Dates (Requested by user: "tarih kısımları ilk gibi olacak") -->
+                    <div class="input-group">
+                        <label for="ek8_hekim_imza_tarih">ASÇ / Hekim İmza Tarihi</label>
+                        <input type="text" id="ek8_hekim_imza_tarih" class="input-control" placeholder="GG.AA.YYYY">
+                    </div>
+                    <div class="input-group">
+                        <label for="ek8_veli_imza_tarih">Veli İmza Tarihi</label>
+                        <input type="text" id="ek8_veli_imza_tarih" class="input-control" placeholder="GG.AA.YYYY">
+                    </div>
+                    <div class="input-group">
+                        <label for="ek8_ism_imza_tarih">TSM/İSM Onay Tarihi</label>
+                        <input type="text" id="ek8_ism_imza_tarih" class="input-control" placeholder="GG.AA.YYYY">
+                    </div>
+                    <div class="checkbox-grid full-width" style="padding-top: 0.75rem;">
+                        <label class="checkbox-item">
+                            <input type="checkbox" id="ek8_cb_imtina" checked>
+                            <span>İmza İmtina Durumu (Kutuyu tikle)</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- LIVE PREVIEW PANEL (RIGHT) -->
+        <div class="preview-panel">
+            
+            <!-- PREVIEW TABS -->
+            <div class="preview-tabs">
+                <button class="tab-btn active" id="tab_ek2" onclick="switchTab('ek2')">
+                    <i class="fa-solid fa-file-lines"></i> Ek-2 İtiraz Formu
+                </button>
+                <button class="tab-btn" id="tab_ek8" onclick="switchTab('ek8')" style="display: none;">
+                    <i class="fa-solid fa-signature"></i> Ek-8 Onam Formu
+                </button>
+            </div>
+
+            <!-- TAB 1: EK-2 PREVIEW -->
+            <div class="a4-page print-active" id="preview-page">
+                
+                <!-- TOP HEADER -->
+                <div class="doc-header-top">
+                    <div>Ek-2</div>
+                    <div class="doc-date-block">
+                        <div class="doc-date-val" id="prev_form_tarihi">18.06.2026</div>
+                        <div class="doc-date-sub">(Aile Hekimi/ Aile Sağlığı Çalışanı tarafından formun doldurulduğu tarih yazılacaktır.)</div>
+                    </div>
+                </div>
+
+                <!-- AUTHORITY HEADERS -->
+                <div class="doc-title-block">
+                    <div class="doc-target">
+                        GAZİANTEP HALK SAĞLIĞI HİZMETLERİ BAŞKANLIĞINA<br>
+                        ŞEHİTKAMİL İlçe Sağlık Müdürlüğü
+                    </div>
+                    <div style="font-size: 12pt; margin-top: 1.5rem; letter-spacing: 0.5px;">
+                        AİLE HEKİMLİĞİ UYGULAMASI PERFORMANS İTİRAZ FORMU*
+                    </div>
+                </div>
+
+                <!-- OBJECTION PERIOD -->
+                <div class="doc-period">
+                    Performans kesintisinin ait olduğu ay/yıl: <span class="doc-period-val" id="prev_kesinti_donemi">06/2026</span>
+                </div>
+
+                <!-- OBJECTION SUBJECTS -->
+                <div class="doc-cb-group">
+                    <div style="margin-bottom: 4px; font-weight: bold;">İtiraz edilen konu (Lütfen ilgili seçeneği işaretleyiniz)</div>
+                    <div>
+                        <span class="doc-cb-item"><span class="doc-cb-char" id="prev_cb_gebe">□</span> Gebe izlemi</span>
+                        <span class="doc-cb-item"><span class="doc-cb-char" id="prev_cb_cocuk">□</span> Çocuk izlemi</span>
+                        <span class="doc-cb-item"><span class="doc-cb-char" id="prev_cb_bebek">□</span> Bebek izlemi</span>
+                        <span class="doc-cb-item"><span class="doc-cb-char" id="prev_cb_lohusa">□</span> Lohusa</span>
+                        <span class="doc-cb-item"><span class="doc-cb-char" id="prev_cb_bagisiklama">□</span> Bağışıklama Hizmetleri</span>
+                        <span class="doc-cb-item"><span class="doc-cb-char" id="prev_cb_diger">□</span> Diğer</span>
+                    </div>
+                </div>
+
+                <!-- VACCINES IN PREVIEW -->
+                <div class="doc-vaccines-block">
+                    <span class="doc-cb-item"><span class="doc-cb-char" id="prev_cb_hepb">□</span> Hep-B,</span>
+                    <span class="doc-cb-item"><span class="doc-cb-char" id="prev_cb_bcg">□</span> BCG,</span>
+                    <span class="doc-cb-item"><span class="doc-cb-char" id="prev_cb_kpa">□</span> KPA,</span>
+                    <span class="doc-cb-item"><span class="doc-cb-char" id="prev_cb_dabt">□</span> DaBT-İPA-Hib-Hep-B,</span>
+                    <span class="doc-cb-item"><span class="doc-cb-char" id="prev_cb_opa">□</span> OPA,</span>
+                    <span class="doc-cb-item"><span class="doc-cb-char" id="prev_cb_sucicegi">□</span> Suçiçeği,</span>
+                    <span class="doc-cb-item"><span class="doc-cb-char" id="prev_cb_kkk">□</span> KKK,</span>
+                    <span class="doc-cb-item"><span class="doc-cb-char" id="prev_cb_hepa">□</span> Hep-A,</span>
+                    <span class="doc-cb-item"><span class="doc-cb-char" id="prev_cb_dabt_ipa">□</span> DaBT-İPA,</span>
+                    <span class="doc-cb-item"><span class="doc-cb-char" id="prev_cb_td">□</span> Td</span>
+                </div>
+
+                <!-- SECTION: PERSON INFO -->
+                <div class="doc-section-title">
+                    PERFORMANS KESİNTİSİNE ESAS TEŞKİL EDEN KİŞİNİN
+                </div>
+
+                <table class="doc-fields-table">
+                    <tr>
+                        <td class="label-cell">T.C. Kimlik No</td>
+                        <td class="separator-cell">:</td>
+                        <td class="value-cell" id="prev_tc_no">45259191062</td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Adı Soyadı</td>
+                        <td class="separator-cell">:</td>
+                        <td class="value-cell" id="prev_adi_soyadi">AHMET YILDIRIM</td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Aile Hekimine Kesin Kayıt Tarihi</td>
+                        <td class="separator-cell">:</td>
+                        <td class="value-cell" id="prev_kayit_tarihi">11.11.2025</td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">İletişim Bilgisi (Kendisinin/Yakınının Telefon No’su)</td>
+                        <td class="separator-cell">:</td>
+                        <td class="value-cell" id="prev_tel_no">5078827031</td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Anne T.C. Kimlik No <span style="font-size: 8pt; font-weight: normal;">(Bebek-Çocuk-Aşı İtirazlarında)</span></td>
+                        <td class="separator-cell">:</td>
+                        <td class="value-cell" id="prev_anne_tc">45280190324</td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Doğum Tarihi <span style="font-size: 8pt; font-weight: normal;">(Bebek-Çocuk-Aşı İtirazlarında)</span></td>
+                        <td class="separator-cell">:</td>
+                        <td class="value-cell" id="prev_dogum_tarihi">04.04.2023</td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Son Adet Tarihi <span style="font-size: 8pt; font-weight: normal;">(Gebe İzlemi İtirazlarında)</span></td>
+                        <td class="separator-cell">:</td>
+                        <td class="value-cell" id="prev_sat">18.10.2025</td>
+                    </tr>
+                    <tr>
+                        <td class="label-cell">Gebenin doğum yaptığı tarih <span style="font-size: 8pt; font-weight: normal;">(Lohusa İzlemi İtirazlarında)</span></td>
+                        <td class="separator-cell">:</td>
+                        <td class="value-cell" id="prev_dogum_tarihi_lohusa">01.06.2026</td>
+                    </tr>
+                </table>
+
+                <!-- SECTION: EXPLANATION -->
+                <div class="doc-explanation-block">
+                    <div class="doc-explanation-label">İtiraz Nedeni Konusunda Açıklama:</div>
+                    <div class="doc-explanation-lines" id="prev_itiraz_nedeni">Kişiye ulaşıldı ama imzadan imtina ediyor.</div>
+                </div>
+
+                <!-- STATEMENT -->
+                <div class="doc-statement">
+                    Aile Hekimliği Uygulaması ile ilgili mevzuat çerçevesinde yapılan performans itiraz değerlendirmesinde, eksik/hatalı olduğunu tespit ettiğim performans standartlarına dair belgeler ekte sunulmuş olup konunun tarafınızdan değerlendirilerek itirazımın sonuçlandırılması hususunda gereğini arz ederim.
+                </div>
+
+                <!-- SIGNATURES BLOCK -->
+                <div class="doc-signature-section">
+                    <div class="doc-sig-left">
+                        <table style="width: 100%; font-size: 10pt; line-height: 1.5;">
+                            <tr>
+                                <td style="width: 50%; font-weight: bold;">10. Aile Hekimliği Birim No</td>
+                                <td style="width: 5%; text-align: center;">:</td>
+                                <td style="border-bottom: 1px dashed #777777;" id="prev_birim_no">27.02.277</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">11. Adı Soyadı</td>
+                                <td style="text-align: center;">:</td>
+                                <td style="border-bottom: 1px dashed #777777;" id="prev_hekim_adi_soyadi">SADIK BAHCİVAN</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold;">12. T.C. Kimlik No</td>
+                                <td style="text-align: center;">:</td>
+                                <td style="border-bottom: 1px dashed #777777;" id="prev_hekim_tc">63946395432</td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="doc-sig-right">
+                        <div class="doc-sig-right-title">AH / ASÇ İmza- Kaşe</div>
+                        <div class="doc-sig-right-sub" style="margin-top: auto;">Ek: (2 sayfa)</div>
+                    </div>
+                </div>
+
+                <!-- EVALUATION BY DISTRICT HEALTH -->
+                <div class="doc-evaluation-section">
+                    <div class="doc-evaluation-title">İLÇE SAĞLIK MÜDÜRLÜĞÜ:</div>
+                    <div class="doc-evaluation-lines"></div>
+                    <div class="doc-evaluation-footer">
+                        <div class="doc-evaluation-cbs">
+                            <span class="doc-cb-item"><span class="doc-cb-char">□</span> UYGUN</span>
+                            <span class="doc-cb-item"><span class="doc-cb-char">□</span> UYGUN DEĞİL</span>
+                            <span class="doc-cb-item"><span class="doc-cb-char">□</span> GEREKSİZ BAŞVURU**</span>
+                        </div>
+                        <div class="doc-evaluation-sig">
+                            <div style="font-size: 8pt; text-align: right; margin-bottom: 15px; padding-right: 20px;">…../…../….</div>
+                            <div style="font-weight: bold; font-size: 10pt;">İSM BAŞKANI</div>
+                            <div style="font-size: 9pt; color: #444; margin-top: 5px;">Adı Soyadı -İmza</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FOOTER NOTES -->
+                <div class="doc-footnotes">
+                    <p>* Aile Hekimliği Uygulaması Performans İtiraz Formu performans esas teşkil eden her kişi ve konu için ayrı ayrı doldurulacaktır.</p>
+                    <p>** İlgili ay için hesaplanan ve T.C. Sağlık Bakanlığı SİNA sisteminde yayınlanan verilerde herhangi bir performans kesintisi olmadığı halde yapılan başvurular "Gereksiz Başvuru" olarak kabul edilecektir.</p>
+                    <p>Performans konu olan kişinin T.C. Kimlik numarası MERNİS'ten sorgulanacaktır.</p>
+                </div>
+
+            </div>
+
+            <!-- TAB 2: EK-8 PREVIEW (HIDDEN BY DEFAULT) -->
+            <div class="a4-page" id="preview-page-ek8" style="display: none;">
+                <!-- TOP HEADER -->
+                <div class="doc-header-top">
+                    <div style="font-weight: bold;">Ek-8</div>
+                </div>
+
+                <!-- TITLE -->
+                <div class="doc-title-block">
+                    <div style="font-size: 13pt; font-weight: bold; letter-spacing: 0.5px; margin-top: 1rem;">
+                        BAĞIŞIKLAMA HİZMETİ BİLGİLENDİRME ONAM FORMU
+                    </div>
+                </div>
+
+                <!-- ONAM FORMU AÇIKLAMA METNİ -->
+                <div style="text-align: justify; line-height: 1.6; font-size: 11pt; margin-top: 2rem; margin-bottom: 2rem; text-indent: 1.5cm;">
+                    <span style="font-weight: bold; border-bottom: 1px dashed #777777; padding: 0 5px;" id="prev_ek8_birim_no">27.02.277</span> numaralı aile hekimliği biriminde Aile Hekimliği Bilgi Sistemine kesin kayıtlı olan <span style="font-weight: bold; border-bottom: 1px dashed #777777; padding: 0 5px;" id="prev_ek8_onam_veren_adi">SULTAN YILDIRIM</span>, T.C. Kimlik numaralı <span style="font-weight: bold; border-bottom: 1px dashed #777777; padding: 0 5px;" id="prev_ek8_onam_veren_tc">45280190324</span>, <span style="font-weight: bold; border-bottom: 1px dashed #777777; padding: 0 5px;" id="prev_ek8_kisi_adi">AHMET YILDIRIM</span> isimli çocuğumun/kendimin bağışıklama hizmetini aile hekimi/aile sağlığı çalışanı tarafından yapılmasını kabul etmediğimi beyan ederim.
+                </div>
+
+                <div style="text-align: justify; line-height: 1.6; font-size: 11pt; margin-bottom: 2rem; text-indent: 1.5cm;">
+                    Gerek başvurum sırasında ve sonrasında gerek bu formu doldururken sağlık ile ilgili her konuda soru sorma, değerlendirme ve karar verme fırsatı tarafıma verilmiş, sağlık personeli tarafından oluşabilecek hastalıklar, riskler ve tehlikeler konusunda gerekli danışmanlık hizmeti verilmiştir. Bu hastalıklar hakkında, bilgilendirildiğim ve aydınlatıldığım halde kendi özgür irademle çocuğumun/kendimin bağışıklama hizmetinin yapılmasına <strong>İZİN VERMİYORUM</strong> tüm sorumluluğu üzerime alarak bu formu imzalıyorum.
+                </div>
+
+                <div style="text-align: justify; line-height: 1.6; font-size: 11pt; margin-bottom: 3.5rem;">
+                    Bu tutanak aşağıda isimleri bulunan kişilerce imza altına alınmıştır.
+                </div>
+
+                <!-- SIGNATURES BLOCK 1 (ASÇ / HEKIM) -->
+                <div style="display: flex; justify-content: space-between; margin-bottom: 3rem; page-break-inside: avoid;">
+                    <div style="width: 45%; text-align: center; font-size: 10pt;">
+                        <div style="margin-bottom: 5px;">Tarih: <span id="prev_ek8_hekim_imza_tarih" style="font-weight: bold;">18.06.2026</span></div>
+                        <div style="border-bottom: 1px dashed #777; height: 25px; margin-bottom: 5px;"></div>
+                        <strong>Aile Sağlığı Çalışanı</strong><br>
+                        <span id="prev_ek8_asc_adi" style="font-size: 9.5pt; color: #333;">A.S.Ç. ÖZLEM BULUT</span><br>
+                        <span style="font-size: 9.5pt; color: #777;">İmza</span>
+                    </div>
+                    <div style="width: 45%; text-align: center; font-size: 10pt;">
+                        <div style="margin-bottom: 5px;">Tarih: <span id="prev_ek8_hekim_imza_tarih_2" style="font-weight: bold;">18.06.2026</span></div>
+                        <div style="border-bottom: 1px dashed #777; height: 25px; margin-bottom: 5px;"></div>
+                        <strong>Aile Hekimi</strong><br>
+                        <span id="prev_ek8_hekim_adi" style="font-size: 9.5pt; color: #333;">Dr. SADIK BAHCİVAN</span><br>
+                        <span style="font-size: 9.5pt; color: #777;">İmza</span>
+                    </div>
+                </div>
+
+                <!-- SIGNATURES BLOCK 2 (VELI) -->
+                <div style="display: flex; justify-content: space-between; margin-bottom: 3rem; page-break-inside: avoid;">
+                    <div style="width: 55%; font-size: 10pt; line-height: 1.6;">
+                        Tarih: <span id="prev_ek8_veli_imza_tarih" style="font-weight: bold; border-bottom: 1px dashed #777;">18.06.2026</span><br>
+                        <strong>Kişinin kendisi veya çocuğun annesi/babası/vasisi</strong><br>
+                        Adı Soyadı: <span id="prev_ek8_veli_ad_soyad" style="font-weight: bold;">SULTAN YILDIRIM</span><br>
+                        Adres bilgisi: <span id="prev_ek8_veli_adres" style="border-bottom: 1px dashed #777; display: inline-block; min-width: 150px;">Şehitkamil / Gaziantep</span><br>
+                        Telefon numarası: <span id="prev_ek8_veli_tel" style="border-bottom: 1px dashed #777; display: inline-block; min-width: 100px;">5078827031</span>
+                    </div>
+                    <div style="width: 35%; text-align: center; font-size: 10pt; align-self: flex-end;">
+                        <div style="border-bottom: 1px dashed #777; height: 35px; margin-bottom: 5px;"></div>
+                        <strong>İmza</strong>
+                    </div>
+                </div>
+
+                <!-- SIGNATURES BLOCK 3 (DISTRICT DIRECTOR) -->
+                <div style="display: flex; justify-content: space-between; margin-bottom: 3.5rem; page-break-inside: avoid;">
+                    <div style="width: 25%; font-size: 10pt; line-height: 1.5;">
+                        Tarih: <span id="prev_ek8_ism_imza_tarih" style="font-weight: bold; border-bottom: 1px dashed #777;">18.06.2026</span>
+                    </div>
+                    <div style="width: 35%; text-align: center; font-size: 10pt;">
+                        <div style="border-bottom: 1px dashed #777; height: 35px; margin-bottom: 5px;"></div>
+                        <strong>İSM/TSM BAŞKANI</strong><br>
+                        <span style="font-size: 9.5pt; color: #555;">İmza</span>
+                    </div>
+                </div>
+
+                <!-- IMTINA TICK -->
+                <div style="margin-top: 2rem; font-size: 11pt; border-top: 0.5px solid #ccc; padding-top: 15px;">
+                    <span class="doc-cb-char" id="prev_ek8_cb_imtina">☑</span> Aileye veya kişiye ulaşılmış ancak formu imzalamadan imtina etmiştir.
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // ========================================================
+        // AİLE HEKİMLİĞİ BİRİMLERİ YAPILANDIRMASI (CONFIG)
+        // Yeni birim/hekim/ASÇ bilgilerini buraya kolayca ekleyebilirsiniz.
+        // ========================================================
+        const AH_UNITS_CONFIG = [
+            {
+                label: "27.02.277 - Dr. SADIK BAHCİVAN",
+                birimNo: "27.02.277",
+                hekimAdi: "SADIK BAHCİVAN",
+                hekimTc: "63946395432",
+                ascAdi: "A.S.Ç. ÖZLEM BULUT" // Linked ASÇ
+            },
+            {
+                label: "27.02.001 - Dr. AHMET YILMAZ",
+                birimNo: "27.02.001",
+                hekimAdi: "AHMET YILMAZ",
+                hekimTc: "12345678901",
+                ascAdi: "Hemşire ELİF ÇELİK"
+            },
+            {
+                label: "27.02.002 - Dr. AYŞE KAYA",
+                birimNo: "27.02.002",
+                hekimAdi: "AYŞE KAYA",
+                hekimTc: "98765432109",
+                ascAdi: "Ebe FATMA DEMİR"
+            },
+            {
+                label: "27.02.003 - Dr. MEHMET DEMİR",
+                birimNo: "27.02.003",
+                hekimAdi: "MEHMET DEMİR",
+                hekimTc: "11111111110",
+                ascAdi: "A.S.Ç. NURTEN CAN"
+            }
+        ];
+
+        // Active tab state ('ek2' or 'ek8')
+        let activeTab = 'ek2';
+
+        // INPUTS & BINDINGS MAP
+        const textBindings = {
+            // Ek-2 bindings
+            'kesinti_donemi': { prevId: 'prev_kesinti_donemi', def: '06/2026' },
+            'tc_no': { prevId: 'prev_tc_no', def: '' },
+            'adi_soyadi': { prevId: 'prev_adi_soyadi', def: '' },
+            'kayit_tarihi': { prevId: 'prev_kayit_tarihi', def: '' },
+            'tel_no': { prevId: 'prev_tel_no', def: '' },
+            'anne_tc': { prevId: 'prev_anne_tc', def: '' },
+            'dogum_tarihi': { prevId: 'prev_dogum_tarihi', def: '' },
+            'sat': { prevId: 'prev_sat', def: '' },
+            'dogum_tarihi_lohusa': { prevId: 'prev_dogum_tarihi_lohusa', def: '' },
+            'itiraz_nedeni': { prevId: 'prev_itiraz_nedeni', def: '' },
+            
+            // Ek-8 specific bindings (Custom dates are fillable: "tarih kısımları ilk gibi olacak")
+            'ek8_onam_veren_adi': { prevId: 'prev_ek8_onam_veren_adi', def: '' },
+            'ek8_onam_veren_tc': { prevId: 'prev_ek8_onam_veren_tc', def: '' },
+            'ek8_kisi_adi': { prevId: 'prev_ek8_kisi_adi', def: '' },
+            'ek8_veli_tel': { prevId: 'prev_ek8_veli_tel', def: '' },
+            'ek8_veli_adres': { prevId: 'prev_ek8_veli_adres', def: 'Şehitkamil / Gaziantep' },
+            'ek8_hekim_imza_tarih': { prevId: 'prev_ek8_hekim_imza_tarih', def: '…/…/…' },
+            'ek8_veli_imza_tarih': { prevId: 'prev_ek8_veli_imza_tarih', def: '…/…/…' },
+            'ek8_ism_imza_tarih': { prevId: 'prev_ek8_ism_imza_tarih', def: '…/…/…' }
+        };
+
+        const checkboxesList = [
+            'cb_gebe', 'cb_cocuk', 'cb_bebek', 'cb_lohusa', 'cb_bagisiklama', 'cb_diger',
+            'cb_hepb', 'cb_bcg', 'cb_kpa', 'cb_dabt', 'cb_opa', 'cb_sucicegi', 'cb_kkk', 'cb_hepa', 'cb_dabt_ipa', 'cb_td'
+        ];
+
+        // INITIALIZATION
+        window.addEventListener('DOMContentLoaded', () => {
+            setupAhUnitsDropdown();
+            setupBindings();
+            loadDefaults();
+            onObjectionSubjectChange();
+            setupSyncBetweenForms();
+            
+            // Set form date at top right automatically to today
+            const todayStr = new Date().toLocaleDateString('tr-TR');
+            document.getElementById('prev_form_tarihi').textContent = todayStr;
+        });
+
+        // POPULATE AH UNITS SELECT DROPDOWN
+        function setupAhUnitsDropdown() {
+            const select = document.getElementById('ah_unit_select');
+            select.innerHTML = '';
+            AH_UNITS_CONFIG.forEach((unit, idx) => {
+                const opt = document.createElement('option');
+                opt.value = idx;
+                opt.textContent = unit.label;
+                select.appendChild(opt);
+            });
+        }
+
+        // AH UNIT CHANGE EVENT
+        function onAhUnitChange() {
+            const select = document.getElementById('ah_unit_select');
+            const unitIndex = parseInt(select.value);
+            const unit = AH_UNITS_CONFIG[unitIndex];
+
+            if (unit) {
+                // Update readonly inputs in form
+                document.getElementById('hekim_adi_soyadi').value = unit.hekimAdi;
+                document.getElementById('hekim_tc').value = unit.hekimTc;
+
+                // Update Ek-2 preview
+                document.getElementById('prev_birim_no').textContent = unit.birimNo;
+                document.getElementById('prev_hekim_adi_soyadi').textContent = unit.hekimAdi;
+                document.getElementById('prev_hekim_tc').textContent = unit.hekimTc;
+
+                // Update Ek-8 preview
+                document.getElementById('prev_ek8_birim_no').textContent = unit.birimNo;
+                document.getElementById('prev_ek8_asc_adi').textContent = unit.ascAdi;
+                document.getElementById('prev_ek8_hekim_adi').textContent = unit.hekimAdi;
+            }
+        }
+
+        // COLLAPSIBLE FORM SECTIONS
+        function toggleSection(header) {
+            const section = header.parentElement;
+            section.classList.toggle('collapsed');
+            const icon = header.querySelector('.toggle-icon');
+            if (section.classList.contains('collapsed')) {
+                icon.className = 'fa-solid fa-chevron-down toggle-icon';
+            } else {
+                icon.className = 'fa-solid fa-chevron-up toggle-icon';
+            }
+        }
+
+        // BIND INPUTS TO PREVIEW
+        function setupBindings() {
+            // Text inputs
+            Object.keys(textBindings).forEach(id => {
+                const input = document.getElementById(id);
+                const prev = document.getElementById(textBindings[id].prevId);
+                
+                if (input && prev) {
+                    input.addEventListener('input', () => {
+                        const val = input.value.trim();
+                        prev.textContent = val !== '' ? val : textBindings[id].def;
+                        
+                        // Also mirror Veli name from Veli input to Veli signature text field
+                        if (id === 'ek8_onam_veren_adi') {
+                            document.getElementById('prev_ek8_veli_ad_soyad').textContent = val !== '' ? val : textBindings[id].def;
+                        }
+                        // Also mirror Hekim signature date to the second date span
+                        if (id === 'ek8_hekim_imza_tarih') {
+                            const prev2 = document.getElementById('prev_ek8_hekim_imza_tarih_2');
+                            if (prev2) {
+                                prev2.textContent = val !== '' ? val : textBindings[id].def;
+                            }
+                        }
+                    });
+                }
+            });
+
+            // Checkbox inputs (Ek-2 checkboxes)
+            checkboxesList.forEach(id => {
+                const input = document.getElementById(id);
+                const prev = document.getElementById('prev_' + id);
+                
+                if (input && prev) {
+                    input.addEventListener('change', () => {
+                        prev.textContent = input.checked ? '☑' : '□';
+                    });
+                }
+            });
+
+            // Ek-8 imtina checkbox binding
+            const imtinaInput = document.getElementById('ek8_cb_imtina');
+            const imtinaPrev = document.getElementById('prev_ek8_cb_imtina');
+            if (imtinaInput && imtinaPrev) {
+                imtinaInput.addEventListener('change', () => {
+                    imtinaPrev.textContent = imtinaInput.checked ? '☑' : '□';
+                });
+            }
+        }
+
+        // SYNC KEY DATA BETWEEN EK-2 AND EK-8 AUTOMATICALLY FOR FASTER ENTRY
+        function setupSyncBetweenForms() {
+            // Sync Patient Name
+            document.getElementById('adi_soyadi').addEventListener('input', (e) => {
+                const val = e.target.value.trim();
+                const ek8Input = document.getElementById('ek8_kisi_adi');
+                if (ek8Input) {
+                    ek8Input.value = val;
+                    document.getElementById('prev_ek8_kisi_adi').textContent = val;
+                }
+            });
+
+            // Sync Mother TC
+            document.getElementById('anne_tc').addEventListener('input', (e) => {
+                const val = e.target.value.trim();
+                const ek8Input = document.getElementById('ek8_onam_veren_tc');
+                if (ek8Input) {
+                    ek8Input.value = val;
+                    document.getElementById('prev_ek8_onam_veren_tc').textContent = val;
+                }
+            });
+
+            // Sync Phone No
+            document.getElementById('tel_no').addEventListener('input', (e) => {
+                const val = e.target.value.trim();
+                const ek8Input = document.getElementById('ek8_veli_tel');
+                if (ek8Input) {
+                    ek8Input.value = val;
+                    document.getElementById('prev_ek8_veli_tel').textContent = val;
+                }
+            });
+        }
+
+        // TAB SWITCHING LOGIC
+        function switchTab(tab) {
+            activeTab = tab;
+            const tab2Btn = document.getElementById('tab_ek8');
+            const ek2Page = document.getElementById('preview-page');
+            const ek8Page = document.getElementById('preview-page-ek8');
+            const tabEk2Btn = document.getElementById('tab_ek2');
+            const tabEk8Btn = document.getElementById('tab_ek8');
+
+            if (tab === 'ek2') {
+                ek2Page.style.display = 'block';
+                ek2Page.classList.add('print-active');
+                ek8Page.style.display = 'none';
+                ek8Page.classList.remove('print-active');
+                tabEk2Btn.classList.add('active');
+                tabEk8Btn.classList.remove('active');
+            } else if (tab === 'ek8' && tab2Btn.style.display !== 'none') {
+                ek2Page.style.display = 'none';
+                ek2Page.classList.remove('print-active');
+                ek8Page.style.display = 'block';
+                ek8Page.classList.add('print-active');
+                tabEk2Btn.classList.remove('active');
+                tabEk8Btn.classList.add('active');
+            }
+        }
+
+        // OBJECTION SUBJECT CHANGE (VISIBILITY LOGIC)
+        function onObjectionSubjectChange() {
+            const cbGebe = document.getElementById('cb_gebe').checked;
+            const cbLohusa = document.getElementById('cb_lohusa').checked;
+            const cbCocuk = document.getElementById('cb_cocuk').checked;
+            const cbBebek = document.getElementById('cb_bebek').checked;
+            const cbBagisiklama = document.getElementById('cb_bagisiklama').checked;
+
+            // 1. Vaccines Panel Visibility
+            const vaccinesPanel = document.getElementById('vaccines_panel');
+            if (cbBagisiklama) {
+                vaccinesPanel.classList.add('active');
+            } else {
+                vaccinesPanel.classList.remove('active');
+                // Uncheck vaccine sub-boxes if parent unchecked
+                const subVaccines = ['cb_hepb', 'cb_bcg', 'cb_kpa', 'cb_dabt', 'cb_opa', 'cb_sucicegi', 'cb_kkk', 'cb_hepa', 'cb_dabt_ipa', 'cb_td'];
+                subVaccines.forEach(id => {
+                    const input = document.getElementById(id);
+                    const prev = document.getElementById('prev_' + id);
+                    if (input) input.checked = false;
+                    if (prev) prev.textContent = '□';
+                });
+            }
+
+            // 2. Conditional Person Info Inputs Visibility
+            toggleInputGroup('wrapper_sat', 'sat', cbGebe);
+            toggleInputGroup('wrapper_dogum_tarihi_lohusa', 'dogum_tarihi_lohusa', cbLohusa);
+            
+            const showChildInputs = cbBebek || cbCocuk || cbBagisiklama;
+            toggleInputGroup('wrapper_anne_tc', 'anne_tc', showChildInputs);
+            toggleInputGroup('wrapper_dogum_tarihi', 'dogum_tarihi', showChildInputs);
+
+            // 3. Ek-8 Section and Tab Visibility (Only if Immunization is checked)
+            const ek8Section = document.getElementById('wrapper_ek8_section');
+            const ek8Tab = document.getElementById('tab_ek8');
+            if (cbBagisiklama) {
+                ek8Section.classList.remove('hidden-section');
+                ek8Tab.style.display = 'flex';
+            } else {
+                ek8Section.classList.add('hidden-section');
+                ek8Tab.style.display = 'none';
+                switchTab('ek2'); // Force back to Ek-2 if tab hidden
+            }
+        }
+
+        // Toggle visibility and clear values if hidden
+        function toggleInputGroup(wrapperId, inputId, isVisible) {
+            const wrapper = document.getElementById(wrapperId);
+            const input = document.getElementById(inputId);
+            const prev = document.getElementById('prev_' + inputId);
+            
+            if (isVisible) {
+                wrapper.classList.remove('hidden-input');
+            } else {
+                wrapper.classList.add('hidden-input');
+                if (input) {
+                    input.value = '';
+                    if (prev) prev.textContent = '';
+                }
+            }
+        }
+
+        // LOAD SAMPLE DEFAULTS
+        function loadDefaults() {
+            // Load dropdown value first
+            document.getElementById('ah_unit_select').value = '0';
+            onAhUnitChange();
+
+            // Set default inputs
+            document.getElementById('kesinti_donemi').value = '06/2026';
+            document.getElementById('prev_kesinti_donemi').textContent = '06/2026';
+
+            document.getElementById('tc_no').value = '45259191062';
+            document.getElementById('prev_tc_no').textContent = '45259191062';
+
+            document.getElementById('adi_soyadi').value = 'AHMET YILDIRIM';
+            document.getElementById('prev_adi_soyadi').textContent = 'AHMET YILDIRIM';
+
+            document.getElementById('kayit_tarihi').value = '11.11.2025';
+            document.getElementById('prev_kayit_tarihi').textContent = '11.11.2025';
+
+            document.getElementById('tel_no').value = '5078827031';
+            document.getElementById('prev_tel_no').textContent = '5078827031';
+
+            // Check specific defaults from sample (Lohusa)
+            checkboxesList.forEach(id => {
+                const input = document.getElementById(id);
+                const prev = document.getElementById('prev_' + id);
+                if (input) input.checked = false;
+                if (prev) prev.textContent = '□';
+            });
+
+            // Set default: let's select Immunization (Bagisiklama) by default to show off Ek-8!
+            document.getElementById('cb_bagisiklama').checked = true;
+            document.getElementById('prev_cb_bagisiklama').textContent = '☑';
+
+            // Check one vaccine by default
+            document.getElementById('cb_dabt').checked = true;
+            document.getElementById('prev_cb_dabt').textContent = '☑';
+
+            onObjectionSubjectChange();
+
+            // Fill child specific defaults
+            document.getElementById('anne_tc').value = '45280190324';
+            document.getElementById('prev_anne_tc').textContent = '45280190324';
+            
+            document.getElementById('dogum_tarihi').value = '04.04.2023';
+            document.getElementById('prev_dogum_tarihi').textContent = '04.04.2023';
+
+            // Fill Ek-8 specific defaults
+            document.getElementById('ek8_onam_veren_adi').value = 'SULTAN YILDIRIM';
+            document.getElementById('prev_ek8_onam_veren_adi').textContent = 'SULTAN YILDIRIM';
+            document.getElementById('prev_ek8_veli_ad_soyad').textContent = 'SULTAN YILDIRIM';
+
+            document.getElementById('ek8_onam_veren_tc').value = '45280190324';
+            document.getElementById('prev_ek8_onam_veren_tc').textContent = '45280190324';
+
+            document.getElementById('ek8_kisi_adi').value = 'AHMET YILDIRIM';
+            document.getElementById('prev_ek8_kisi_adi').textContent = 'AHMET YILDIRIM';
+
+            document.getElementById('ek8_veli_tel').value = '5078827031';
+            document.getElementById('prev_ek8_veli_tel').textContent = '5078827031';
+
+            document.getElementById('ek8_veli_adres').value = 'Şehitkamil / Gaziantep';
+            document.getElementById('prev_ek8_veli_adres').textContent = 'Şehitkamil / Gaziantep';
+
+            // Fill Custom Dates for Ek-8 ("tarih kısımları ilk gibi olacak")
+            const todayStr = new Date().toLocaleDateString('tr-TR');
+            document.getElementById('ek8_hekim_imza_tarih').value = todayStr;
+            document.getElementById('prev_ek8_hekim_imza_tarih').textContent = todayStr;
+            document.getElementById('prev_ek8_hekim_imza_tarih_2').textContent = todayStr;
+
+            document.getElementById('ek8_veli_imza_tarih').value = todayStr;
+            document.getElementById('prev_ek8_veli_imza_tarih').textContent = todayStr;
+
+            document.getElementById('ek8_ism_imza_tarih').value = todayStr;
+            document.getElementById('prev_ek8_ism_imza_tarih').textContent = todayStr;
+
+            document.getElementById('ek8_cb_imtina').checked = true;
+            document.getElementById('prev_ek8_cb_imtina').textContent = '☑';
+
+            // Objection details
+            document.getElementById('itiraz_nedeni').value = 'Kişiye ulaşıldı ama imzadan imtina ediyor.';
+            document.getElementById('prev_itiraz_nedeni').textContent = 'Kişiye ulaşıldı ama imzadan imtina ediyor.';
+
+            // Switch to Ek-2 first
+            switchTab('ek2');
+        }
+
+        // CLEAR FORM
+        function clearForm() {
+            Object.keys(textBindings).forEach(id => {
+                const input = document.getElementById(id);
+                const prev = document.getElementById(textBindings[id].prevId);
+                if (input) input.value = '';
+                if (prev) prev.textContent = '';
+            });
+
+            checkboxesList.forEach(id => {
+                const input = document.getElementById(id);
+                const prev = document.getElementById('prev_' + id);
+                if (input) input.checked = false;
+                if (prev) prev.textContent = '□';
+            });
+
+            // Reset dropdown
+            document.getElementById('ah_unit_select').value = '0';
+            onAhUnitChange();
+
+            onObjectionSubjectChange();
+        }
+
+        // XML ESCAPE HELPER
+        function escapeXml(unsafe) {
+            if (!unsafe) return '';
+            return unsafe.toString()
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&apos;');
+        }
+
+        // ROUTER FOR DOCX EXPORTS BASED ON ACTIVE PREVIEW TAB
+        function exportDocx() {
+            if (activeTab === 'ek2') {
+                exportDocxEk2();
+            } else if (activeTab === 'ek8') {
+                exportDocxEk8();
+            }
+        }
+
+        // ROUTER FOR PDF EXPORTS BASED ON ACTIVE PREVIEW TAB
+        function exportPdf() {
+            if (activeTab === 'ek2') {
+                exportPdfEk2();
+            } else if (activeTab === 'ek8') {
+                exportPdfEk8();
+            }
+        }
+
+        // EXPORT EK-2 DOCX (JSZIP)
+        function exportDocxEk2() {
+            if (typeof TEMPLATE_DOCX_BASE64 === 'undefined') {
+                alert("Hata: template_docx.js yüklenemedi. Şablon verisi eksik.");
+                return;
+            }
+
+            const getVal = (id) => document.getElementById(id).value.trim();
+            const getCheck = (id) => document.getElementById(id).checked ? '☑' : '□';
+            const select = document.getElementById('ah_unit_select');
+            const unit = AH_UNITS_CONFIG[parseInt(select.value)];
+
+            const values = {
+                '{{form_tarih}}': escapeXml(new Date().toLocaleDateString('tr-TR')),
+                '{{il_ust}}': 'GAZİANTEP',
+                '{{ilce_ust}}': 'ŞEHİTKAMİL',
+                '{{ek_sayfa}}': '2',
+                '{{ilce_saglik_mudurlugu}}': '',
+
+                '{{kesinti_donemi}}': escapeXml(getVal('kesinti_donemi') || '06/2026'),
+                '{{tc_no}}': escapeXml(getVal('tc_no') || ''),
+                '{{adi_soyadi}}': escapeXml(getVal('adi_soyadi') || ''),
+                '{{kayit_tarihi}}': escapeXml(getVal('kayit_tarihi') || ''),
+                '{{tel_no}}': escapeXml(getVal('tel_no') || ''),
+                '{{anne_tc}}': escapeXml(getVal('anne_tc') || ''),
+                '{{dogum_tarihi}}': escapeXml(getVal('dogum_tarihi') || ''),
+                '{{sat}}': escapeXml(getVal('sat') || ''),
+                '{{dogum_tarihi_lohusa}}': escapeXml(getVal('dogum_tarihi_lohusa') || ''),
+                '{{itiraz_nedeni}}': escapeXml(getVal('itiraz_nedeni') || ''),
+                
+                '{{birim_no}}': escapeXml(unit ? unit.birimNo : ''),
+                '{{hekim_adi_soyadi}}': escapeXml(unit ? unit.hekimAdi : ''),
+                '{{hekim_tc}}': escapeXml(unit ? unit.hekimTc : ''),
+                
+                '{{cb_gebe}}': getCheck('cb_gebe'),
+                '{{cb_cocuk}}': getCheck('cb_cocuk'),
+                '{{cb_bebek}}': getCheck('cb_bebek'),
+                '{{cb_lohusa}}': getCheck('cb_lohusa'),
+                '{{cb_bagisiklama}}': getCheck('cb_bagisiklama'),
+                '{{cb_diger}}': getCheck('cb_diger'),
+
+                '{{cb_hepb}}': getCheck('cb_hepb'),
+                '{{cb_bcg}}': getCheck('cb_bcg'),
+                '{{cb_kpa}}': getCheck('cb_kpa'),
+                '{{cb_dabt}}': getCheck('cb_dabt'),
+                '{{cb_opa}}': getCheck('cb_opa'),
+                '{{cb_sucicegi}}': getCheck('cb_sucicegi'),
+                '{{cb_kkk}}': getCheck('cb_kkk'),
+                '{{cb_hepa}}': getCheck('cb_hepa'),
+                '{{cb_dabt_ipa}}': getCheck('cb_dabt_ipa'),
+                '{{cb_td}}': getCheck('cb_td')
+            };
+
+            const zipBinary = atob(TEMPLATE_DOCX_BASE64);
+            const zipBuffer = new Uint8Array(zipBinary.length);
+            for (let i = 0; i < zipBinary.length; i++) {
+                zipBuffer[i] = zipBinary.charCodeAt(i);
+            }
+
+            JSZip.loadAsync(zipBuffer).then(zip => {
+                return zip.file("word/document.xml").async("string").then(docXml => {
+                    let modifiedXml = docXml;
+                    Object.keys(values).forEach(placeholder => {
+                        modifiedXml = modifiedXml.split(placeholder).join(values[placeholder]);
+                    });
+                    zip.file("word/document.xml", modifiedXml);
+                    return zip.generateAsync({
+                        type: "blob",
+                        mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    });
+                });
+            }).then(blob => {
+                const tc = getVal('tc_no') || 'itiraz';
+                const name = getVal('adi_soyadi').replace(/\s+/g, '_') || 'formu';
+                const filename = `Ek-2_Itiraz_Formu_${tc}_${name}.docx`;
+                
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }).catch(err => {
+                console.error(err);
+                alert("Ek-2 Word oluşturulurken hata: " + err.message);
+            });
+        }
+
+        // EXPORT EK-8 DOCX (JSZIP)
+        function exportDocxEk8() {
+            if (typeof TEMPLATE_EK8_DOCX_BASE64 === 'undefined') {
+                alert("Hata: template_ek8_docx.js yüklenemedi. Şablon verisi eksik.");
+                return;
+            }
+
+            const getVal = (id) => document.getElementById(id).value.trim();
+            const getCheck = (id) => document.getElementById(id).checked ? '☑' : '□';
+            const select = document.getElementById('ah_unit_select');
+            const unit = AH_UNITS_CONFIG[parseInt(select.value)];
+
+            const values = {
+                '{{birim_no}}': escapeXml(unit ? unit.birimNo : ''),
+                '{{onam_veren_adi}}': escapeXml(getVal('ek8_onam_veren_adi')),
+                '{{onam_veren_tc}}': escapeXml(getVal('ek8_onam_veren_tc')),
+                '{{kisi_adi}}': escapeXml(getVal('ek8_kisi_adi')),
+                '{{hekim_imza_tarih}}': escapeXml(getVal('ek8_hekim_imza_tarih')),
+                '{{veli_imza_tarih}}': escapeXml(getVal('ek8_veli_imza_tarih')),
+                '{{veli_adres}}': escapeXml(getVal('ek8_veli_adres')),
+                '{{veli_tel}}': escapeXml(getVal('ek8_veli_tel')),
+                '{{ism_imza_tarih}}': escapeXml(getVal('ek8_ism_imza_tarih')),
+                '{{cb_imtina}}': getCheck('ek8_cb_imtina')
+            };
+
+            const zipBinary = atob(TEMPLATE_EK8_DOCX_BASE64);
+            const zipBuffer = new Uint8Array(zipBinary.length);
+            for (let i = 0; i < zipBinary.length; i++) {
+                zipBuffer[i] = zipBinary.charCodeAt(i);
+            }
+
+            JSZip.loadAsync(zipBuffer).then(zip => {
+                return zip.file("word/document.xml").async("string").then(docXml => {
+                    let modifiedXml = docXml;
+                    Object.keys(values).forEach(placeholder => {
+                        modifiedXml = modifiedXml.split(placeholder).join(values[placeholder]);
+                    });
+                    zip.file("word/document.xml", modifiedXml);
+                    return zip.generateAsync({
+                        type: "blob",
+                        mimeType: "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+                    });
+                });
+            }).then(blob => {
+                const tc = getVal('tc_no') || 'itiraz';
+                const name = getVal('adi_soyadi').replace(/\s+/g, '_') || 'formu';
+                const filename = `Ek-8_Onam_Formu_${tc}_${name}.docx`;
+                
+                const link = document.createElement('a');
+                link.href = URL.createObjectURL(blob);
+                link.download = filename;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }).catch(err => {
+                console.error(err);
+                alert("Ek-8 Word oluşturulurken hata: " + err.message);
+            });
+        }
+
+        // EXPORT EK-2 PDF (HTML2PDF)
+        function exportPdfEk2() {
+            const element = document.getElementById('preview-page');
+            const getVal = (id) => document.getElementById(id).value.trim();
+            const tc = getVal('tc_no') || 'itiraz';
+            const name = getVal('adi_soyadi').replace(/\s+/g, '_') || 'formu';
+            const filename = `Ek-2_Itiraz_Formu_${tc}_${name}.pdf`;
+
+            const opt = {
+                margin:       12,
+                filename:     filename,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 3.5, useCORS: true, letterRendering: true },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            const saveBtn = document.querySelector('.btn-success');
+            const originalHtml = saveBtn.innerHTML;
+            saveBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> PDF Hazırlanıyor...';
+            saveBtn.disabled = true;
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                saveBtn.innerHTML = originalHtml;
+                saveBtn.disabled = false;
+            }).catch(err => {
+                console.error(err);
+                alert("PDF oluşturulurken hata: " + err.message);
+                saveBtn.innerHTML = originalHtml;
+                saveBtn.disabled = false;
+            });
+        }
+
+        // EXPORT EK-8 PDF (HTML2PDF)
+        function exportPdfEk8() {
+            const element = document.getElementById('preview-page-ek8');
+            const getVal = (id) => document.getElementById(id).value.trim();
+            const tc = getVal('tc_no') || 'itiraz';
+            const name = getVal('adi_soyadi').replace(/\s+/g, '_') || 'formu';
+            const filename = `Ek-8_Onam_Formu_${tc}_${name}.pdf`;
+
+            const opt = {
+                margin:       12,
+                filename:     filename,
+                image:        { type: 'jpeg', quality: 0.98 },
+                html2canvas:  { scale: 3.5, useCORS: true, letterRendering: true },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            const saveBtn = document.querySelector('.btn-success');
+            const originalHtml = saveBtn.innerHTML;
+            saveBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> PDF Hazırlanıyor...';
+            saveBtn.disabled = true;
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                saveBtn.innerHTML = originalHtml;
+                saveBtn.disabled = false;
+            }).catch(err => {
+                console.error(err);
+                alert("PDF oluşturulurken hata: " + err.message);
+                saveBtn.innerHTML = originalHtml;
+                saveBtn.disabled = false;
+            });
+        }
+    </script>
+</body>
+</html>
