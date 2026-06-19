@@ -98,8 +98,8 @@ Ek-8 "Bağışıklama Hizmeti Bilgilendirme Onam Formu" üzerinde yapılan kriti
 
 ## 📝 Ek-12 Bağışıklama/İzlem Bilgilendirme Tutanağı
 Ek-12 "Bağışıklama/İzlem Bilgilendirme Tutanağı" desteği sisteme eklenmiştir:
-- **Otomatik Birleştirme**: İlçe Sağlık Müdürlüğü / Toplum Sağlığı Merkezi tarafından yapılan ev ziyaretleri sonrasında düzenlenen bu tutanak için gerekli tüm alanlar (Hasta T.C., Hasta Adı, Birim No, İSM/TSM Adı, Görevli Ziyaretçi ve Çalışan bilgileri) form üzerinden doldurulabilmektedir.
-- **İmza Tarihleri**: Psikolog/sosyal çalışmacı/sorumlu kişi, İSM/TSM çalışanı ve İSM/TSM Başkanı için imza/onay tarihleri dinamik olarak ayarlanabilmekte ve önizleme üzerinde gösterilmektedir.
+- **Otomatik Senkronizasyon**: En üst paragrafta yer alan **Birim Kodu**, **Hasta T.C. Kimlik No** ve **Hasta Adı** alanları ana Ek-2/Ek-8 formundaki girdilerden otomatik olarak doldurulmaktadır. Ayrı bir veri girişi gerektirmez.
+- **Sadeleştirilmiş İmza Alanları**: Kullanıcı talepleri doğrultusunda alt imza kısımlarındaki gereksiz doldurma alanları kaldırılmıştır. Önizleme ve DOCX/PDF çıktısında alt kısımdaki imza alanları, isimler ve onay tarihleri orijinal boş şablonda olduğu gibi boş nokta/çizgi (`…………………………` ve `…./…./….`) şeklinde bırakılır.
 
 ## 📄 Lisans
 Bu proje kamu yararına ve Aile Hekimlerinin bürokratik süreçlerini kolaylaştırmak amacıyla açık kaynak olarak geliştirilmiştir. Dilediğiniz gibi kullanabilir, geliştirebilir ve dağıtabilirsiniz.
