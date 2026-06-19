@@ -1331,23 +1331,23 @@
                 </div>
 
                 <div style="font-size: 11pt; font-weight: bold; margin-bottom: 2rem;">
-                    İSM/TSM Adı: <span id="prev_ek12_ism_tsm_adi" style="border-bottom: 1px dashed #777; padding: 0 5px;">Şehitkamil İlçe Sağlık Müdürlüğü</span>
+                    İSM/TSM Adı: <span style="border-bottom: 1px dashed #777; padding: 0 55px;">&nbsp;</span>
                 </div>
 
                 <!-- SIGNATURES BLOCK 1 -->
                 <div style="display: flex; justify-content: space-between; margin-bottom: 3rem; page-break-inside: avoid;">
                     <div style="width: 45%; text-align: center; font-size: 10pt;">
-                        <div style="margin-bottom: 5px;">Tarih: <span id="prev_ek12_gorevli_imza_tarih" style="font-weight: bold;">19.06.2026</span></div>
+                        <div style="margin-bottom: 5px;">Tarih: <span style="font-weight: bold;">…./…./….</span></div>
                         <div style="border-bottom: 1px dashed #777; height: 25px; margin-bottom: 5px;"></div>
                         <strong>Psikolog/sosyal çalışmacı/sorumlu kişi</strong><br>
-                        <span id="prev_ek12_gorevli_adi" style="font-size: 9.5pt; color: #333; font-weight: bold;">PSİKOLOG ALİ YILMAZ</span><br>
+                        <span style="font-size: 9.5pt; color: #777; font-weight: bold;">…………………………</span><br>
                         <span style="font-size: 9.5pt; color: #777;">İmza</span>
                     </div>
                     <div style="width: 45%; text-align: center; font-size: 10pt;">
-                        <div style="margin-bottom: 5px;">Tarih: <span id="prev_ek12_calisan_imza_tarih" style="font-weight: bold;">19.06.2026</span></div>
+                        <div style="margin-bottom: 5px;">Tarih: <span style="font-weight: bold;">…./…./….</span></div>
                         <div style="border-bottom: 1px dashed #777; height: 25px; margin-bottom: 5px;"></div>
                         <strong>İSM/TSM Çalışanı</strong><br>
-                        <span id="prev_ek12_calisan_adi" style="font-size: 9.5pt; color: #333; font-weight: bold;">ASÇ NURTEN CAN</span><br>
+                        <span style="font-size: 9.5pt; color: #777; font-weight: bold;">…………………………</span><br>
                         <span style="font-size: 9.5pt; color: #777;">İmza</span>
                     </div>
                 </div>
@@ -1355,7 +1355,7 @@
                 <!-- SIGNATURES BLOCK 2 (İSM/TSM BAŞKANI) -->
                 <div style="display: flex; justify-content: flex-end; margin-bottom: 2rem; page-break-inside: avoid;">
                     <div style="width: 45%; text-align: center; font-size: 10pt;">
-                        <div style="margin-bottom: 5px;">Tarih: <span id="prev_ek12_ism_imza_tarih" style="font-weight: bold;">19.06.2026</span></div>
+                        <div style="margin-bottom: 5px;">Tarih: <span style="font-weight: bold;">…./…./….</span></div>
                         <div style="border-bottom: 1px dashed #777; height: 25px; margin-bottom: 5px;"></div>
                         <strong>İSM/TSM BAŞKANI</strong><br>
                         <span style="font-size: 9.5pt; color: #777;">İmza</span>
@@ -1429,17 +1429,7 @@
             'ek8_veli_adres': { prevId: 'prev_ek8_veli_adres', def: 'Şehitkamil / Gaziantep' },
             'ek8_hekim_imza_tarih': { prevId: 'prev_ek8_hekim_imza_tarih', def: '…/…/…' },
             'ek8_veli_imza_tarih': { prevId: 'prev_ek8_veli_imza_tarih', def: '…/…/…' },
-            'ek8_ism_imza_tarih': { prevId: 'prev_ek8_ism_imza_tarih', def: '…/…/…' },
-
-            // Ek-12 specific bindings
-            'ek12_ism_tsm_adi': { prevId: 'prev_ek12_ism_tsm_adi', def: 'Şehitkamil İlçe Sağlık Müdürlüğü' },
-            'ek12_hasta_tc': { prevId: 'prev_ek12_hasta_tc', def: '' },
-            'ek12_hasta_adi': { prevId: 'prev_ek12_hasta_adi', def: '' },
-            'ek12_gorevli_adi': { prevId: 'prev_ek12_gorevli_adi', def: '' },
-            'ek12_calisan_adi': { prevId: 'prev_ek12_calisan_adi', def: '' },
-            'ek12_gorevli_imza_tarih': { prevId: 'prev_ek12_gorevli_imza_tarih', def: '…/…/…' },
-            'ek12_calisan_imza_tarih': { prevId: 'prev_ek12_calisan_imza_tarih', def: '…/…/…' },
-            'ek12_ism_imza_tarih': { prevId: 'prev_ek12_ism_imza_tarih', def: '…/…/…' }
+            'ek8_ism_imza_tarih': { prevId: 'prev_ek8_ism_imza_tarih', def: '…/…/…' }
         };
 
         const checkboxesList = [
@@ -1495,11 +1485,6 @@
 
                 // Update Ek-12 preview
                 document.getElementById('prev_ek12_birim_no').textContent = unit.birimNo;
-                const calisanInput = document.getElementById('ek12_calisan_adi');
-                if (calisanInput) {
-                    calisanInput.value = unit.ascAdi;
-                    document.getElementById('prev_ek12_calisan_adi').textContent = unit.ascAdi;
-                }
             }
         }
 
@@ -1574,20 +1559,18 @@
                     ek8Input.value = val;
                     document.getElementById('prev_ek8_kisi_adi').textContent = val;
                 }
-                const ek12Input = document.getElementById('ek12_hasta_adi');
-                if (ek12Input) {
-                    ek12Input.value = val;
-                    document.getElementById('prev_ek12_hasta_adi').textContent = val;
+                const prevEk12Name = document.getElementById('prev_ek12_hasta_adi');
+                if (prevEk12Name) {
+                    prevEk12Name.textContent = val;
                 }
             });
 
             // Sync Patient TC to Ek-12
             document.getElementById('tc_no').addEventListener('input', (e) => {
                 const val = e.target.value.trim();
-                const ek12Input = document.getElementById('ek12_hasta_tc');
-                if (ek12Input) {
-                    ek12Input.value = val;
-                    document.getElementById('prev_ek12_hasta_tc').textContent = val;
+                const prevEk12Tc = document.getElementById('prev_ek12_hasta_tc');
+                if (prevEk12Tc) {
+                    prevEk12Tc.textContent = val;
                 }
             });
 
@@ -1818,31 +1801,9 @@
             document.getElementById('itiraz_nedeni').value = 'Kişiye ulaşıldı ama imzadan imtina ediyor.';
             document.getElementById('prev_itiraz_nedeni').textContent = 'Kişiye ulaşıldı ama imzadan imtina ediyor.';
 
-            // Fill Ek-12 specific defaults
-            document.getElementById('ek12_ism_tsm_adi').value = 'Şehitkamil İlçe Sağlık Müdürlüğü';
-            document.getElementById('prev_ek12_ism_tsm_adi').textContent = 'Şehitkamil İlçe Sağlık Müdürlüğü';
-
-            document.getElementById('ek12_hasta_tc').value = '45259191062';
+            // Fill Ek-12 specific defaults (only patient TC and Name)
             document.getElementById('prev_ek12_hasta_tc').textContent = '45259191062';
-
-            document.getElementById('ek12_hasta_adi').value = 'AHMET YILDIRIM';
             document.getElementById('prev_ek12_hasta_adi').textContent = 'AHMET YILDIRIM';
-
-            document.getElementById('ek12_gorevli_adi').value = 'PSİKOLOG ALİ YILMAZ';
-            document.getElementById('prev_ek12_gorevli_adi').textContent = 'PSİKOLOG ALİ YILMAZ';
-
-            // ASÇ name from unit 0
-            document.getElementById('ek12_calisan_adi').value = 'A.S.Ç. ÖZLEM BULUT';
-            document.getElementById('prev_ek12_calisan_adi').textContent = 'A.S.Ç. ÖZLEM BULUT';
-
-            document.getElementById('ek12_gorevli_imza_tarih').value = todayStr;
-            document.getElementById('prev_ek12_gorevli_imza_tarih').textContent = todayStr;
-
-            document.getElementById('ek12_calisan_imza_tarih').value = todayStr;
-            document.getElementById('prev_ek12_calisan_imza_tarih').textContent = todayStr;
-
-            document.getElementById('ek12_ism_imza_tarih').value = todayStr;
-            document.getElementById('prev_ek12_ism_imza_tarih').textContent = todayStr;
 
             // Switch to Ek-2 first
             switchTab('ek2');
@@ -2065,14 +2026,8 @@
 
             const values = {
                 '{{birim_no}}': escapeXml(unit ? unit.birimNo : ''),
-                '{{ek12_hasta_tc}}': escapeXml(getVal('ek12_hasta_tc')),
-                '{{ek12_hasta_adi}}': escapeXml(getVal('ek12_hasta_adi')),
-                '{{ek12_ism_tsm_adi}}': escapeXml(getVal('ek12_ism_tsm_adi')),
-                '{{ek12_gorevli_imza_tarih}}': escapeXml(getVal('ek12_gorevli_imza_tarih')),
-                '{{ek12_calisan_imza_tarih}}': escapeXml(getVal('ek12_calisan_imza_tarih')),
-                '{{ek12_gorevli_adi}}': escapeXml(getVal('ek12_gorevli_adi')),
-                '{{ek12_calisan_adi}}': escapeXml(getVal('ek12_calisan_adi')),
-                '{{ek12_ism_imza_tarih}}': escapeXml(getVal('ek12_ism_imza_tarih'))
+                '{{ek12_hasta_tc}}': escapeXml(getVal('tc_no')),
+                '{{ek12_hasta_adi}}': escapeXml(getVal('adi_soyadi'))
             };
 
             const zipBinary = atob(TEMPLATE_EK12_DOCX_BASE64);
