@@ -1,6 +1,6 @@
-# Aile Hekimliği Performans İtiraz Formu Doldurucu (Ek-2 & Ek-8)
+# Aile Hekimliği Performans İtiraz Formu Doldurucu (Ek-2, Ek-8 & Ek-12)
 
-Bu proje, Aile Hekimlerinin aylık performans kesintilerine karşı sunacakları **Ek-2 Performans İtiraz Formu** ile **Ek-8 Bağışıklama Hizmeti Bilgilendirme Onam Formu** belgelerini web arayüzü üzerinden hızlı, hatasız ve otomatik olarak doldurmalarını sağlayan, tamamen istemci tarafında (tarayıcıda) çalışan bir web uygulamasıdır.
+Bu proje, Aile Hekimlerinin aylık performans kesintilerine karşı sunacakları **Ek-2 Performans İtiraz Formu**, **Ek-8 Bağışıklama Hizmeti Bilgilendirme Onam Formu** ve **Ek-12 Bağışıklama/İzlem Bilgilendirme Tutanağı** belgelerini web arayüzü üzerinden hızlı, hatasız ve otomatik olarak doldurmalarını sağlayan, tamamen istemci tarafında (tarayıcıda) çalışan bir web uygulamasıdır.
 
 ## 🚀 Öne Çıkan Özellikler
 
@@ -95,6 +95,11 @@ Uygulamanın arka planında, Word şablonlarının XML yapısını doğrudan man
 Ek-8 "Bağışıklama Hizmeti Bilgilendirme Onam Formu" üzerinde yapılan kritik güncellemeler:
 - **Hizalama ve Boşluklar**: XML düzeyinde yapılan düzeltmelerle, isimler ve T.C. kimlik numaralarının bitişik çıkması sorunu giderilmiştir. İsimler ile T.C. numaraları arasında doğal tek karakterlik boşluklar bırakılmıştır.
 - **İmza Alanları ve Tarih**: Formun altındaki imza bloğunda, hem **Aile Sağlığı Çalışanı** hem de **Aile Hekimi** imza çizgilerinin üzerine tarih alanı eklenmiştir. Arayüzden girilen imza tarihi her iki tarafa da otomatik ve eşzamanlı olarak yazılmaktadır.
+
+## 📝 Ek-12 Bağışıklama/İzlem Bilgilendirme Tutanağı
+Ek-12 "Bağışıklama/İzlem Bilgilendirme Tutanağı" desteği sisteme eklenmiştir:
+- **Otomatik Birleştirme**: İlçe Sağlık Müdürlüğü / Toplum Sağlığı Merkezi tarafından yapılan ev ziyaretleri sonrasında düzenlenen bu tutanak için gerekli tüm alanlar (Hasta T.C., Hasta Adı, Birim No, İSM/TSM Adı, Görevli Ziyaretçi ve Çalışan bilgileri) form üzerinden doldurulabilmektedir.
+- **İmza Tarihleri**: Psikolog/sosyal çalışmacı/sorumlu kişi, İSM/TSM çalışanı ve İSM/TSM Başkanı için imza/onay tarihleri dinamik olarak ayarlanabilmekte ve önizleme üzerinde gösterilmektedir.
 
 ## 📄 Lisans
 Bu proje kamu yararına ve Aile Hekimlerinin bürokratik süreçlerini kolaylaştırmak amacıyla açık kaynak olarak geliştirilmiştir. Dilediğiniz gibi kullanabilir, geliştirebilir ve dağıtabilirsiniz.
