@@ -1700,6 +1700,12 @@
                     const formattedSat = formatDateToTR(patient.SON_ADET_TARIHI);
                     setInputValue('sat', formattedSat);
                 }
+
+                // Populate Lohusa Doğum Tarihi (Gebelik Sonlanma Tarihi)
+                if (patient.GEBELIK_SONLANMA_TARIHI) {
+                    const formattedLohusa = formatDateToTR(patient.GEBELIK_SONLANMA_TARIHI);
+                    setInputValue('dogum_tarihi_lohusa', formattedLohusa);
+                }
                 
                 // Set default Onam Veren (Veli/Hasta) name for Ek-8 to the Patient's own name (can be changed manually)
                 setInputValue('ek8_onam_veren_adi', fullName.trim());

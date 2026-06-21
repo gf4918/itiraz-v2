@@ -89,7 +89,7 @@ class PatientDbHandler(http.server.SimpleHTTPRequestHandler):
             conn = pyodbc.connect(conn_str)
             cursor = conn.cursor()
             
-            # Query to fetch patient + phone + address + latest SAT (pregnancy notification date)
+            # Query to fetch patient + phone + address + latest SAT (pregnancy notification date) + postpartum date (Lohusa)
             query = """
                 SELECT TOP 1 
                     k.HASTA_KIMLIK_NO, k.AD, k.SOYAD, k.DOGUM_TARIHI, k.ANNE_KIMLIK_NO,
@@ -102,7 +102,15 @@ class PatientDbHandler(http.server.SimpleHTTPRequestHandler):
                         JOIN GP_HASTA_KABUL hk ON hk.HASTA_KABUL_ID = m.HASTA_KABUL
                         WHERE hk.HASTA_KAYIT = k.HASTA_KAYIT_ID AND gb.SON_ADET_TARIHI IS NOT NULL
                         ORDER BY gb.GEBELIK_BILDIRIM_ID DESC
-                    ) AS SON_ADET_TARIHI
+                    ) AS SON_ADET_TARIHI,
+                    (
+                        SELECT TOP 1 gs.GEBELIK_SONLANMA_TARIHI
+                        FROM GP_GEBELIK_SONUCU gs
+                        JOIN GP_MUAYENE m ON m.MUAYENE_ID = gs.MUAYENE
+                        JOIN GP_HASTA_KABUL hk ON hk.HASTA_KABUL_ID = m.HASTA_KABUL
+                        WHERE hk.HASTA_KAYIT = k.HASTA_KAYIT_ID AND gs.GEBELIK_SONLANMA_TARIHI IS NOT NULL
+                        ORDER BY gs.GEBELIK_SONUCU_ID DESC
+                    ) AS GEBELIK_SONLANMA_TARIHI
                 FROM GP_HASTA_KAYIT k
                 LEFT JOIN GP_HASTA_OZLUK o ON o.HASTA_KAYIT = k.HASTA_KAYIT_ID
                 LEFT JOIN DTY_HASTA_OZLUK_TELEFON t ON t.HASTA_OZLUK = o.HASTA_OZLUK_ID
@@ -124,6 +132,9 @@ class PatientDbHandler(http.server.SimpleHTTPRequestHandler):
                 
                 if data.get('SON_ADET_TARIHI'):
                     data['SON_ADET_TARIHI'] = str(data['SON_ADET_TARIHI'])[:10] # YYYY-MM-DD
+                
+                if data.get('GEBELIK_SONLANMA_TARIHI'):
+                    data['GEBELIK_SONLANMA_TARIHI'] = str(data['GEBELIK_SONLANMA_TARIHI'])[:10] # YYYY-MM-DD
                 
                 # Format phone number if exists
                 if data.get('TELEFON'):
