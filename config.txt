@@ -1,0 +1,10 @@
+# Aile Hekimliği Birimleri Yapılandırma Dosyası
+#
+# Format: Birim No | Hekim Adı Soyadı | Hekim T.C. Kimlik No | Aile Sağlığı Çalışanı (ASÇ) Adı | Bilgisayar Adı | Arayüz Etiketi (Opsiyonel)
+# NOT: Kolonları ayırmak için dikey çizgi ( | ) kullanınız. Başında # olan satırlar ve boş satırlar yok sayılır.
+#
+# Örnek Satır:
+27.02.277 | SADIK BAHCİVAN | 63946395432 | A.S.Ç. ÖZLEM BULUT | LAPTOP-FUHDPK9K | 27.02.277 - Dr. SADIK BAHCİVAN
+27.02.001 | AHMET YILMAZ | 12345678901 | Hemşire ELİF ÇELİK | LAPTOP-FUHDPK9K | 27.02.001 - Dr. AHMET YILMAZ
+27.02.002 | AYŞE KAYA | 98765432109 | Ebe FATMA DEMİR | LAPTOP-FUHDPK9K | 27.02.002 - Dr. AYŞE KAYA
+27.02.003 | MEHMET DEMİR | 11111111110 | A.S.Ç. NURTEN CAN | LAPTOP-FUHDPK9K | 27.02.003 - Dr. MEHMET DEMİR

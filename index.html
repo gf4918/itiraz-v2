@@ -866,7 +866,12 @@
                     <!-- Always visible -->
                     <div class="input-group">
                         <label for="tc_no">Kişi T.C. Kimlik No</label>
-                        <input type="text" id="tc_no" class="input-control" maxlength="11" placeholder="11 Haneli TC">
+                        <div style="display: flex; gap: 0.5rem; align-items: center;">
+                            <input type="text" id="tc_no" class="input-control" maxlength="11" placeholder="11 Haneli TC" style="flex: 1;">
+                            <button type="button" id="btn_fetch_db" class="btn btn-primary" style="padding: 0.625rem 0.75rem; height: 38px; display: inline-flex; align-items: center; justify-content: center; gap: 0.25rem;" title="Veritabanından Çek" onclick="fetchPatientData()">
+                                <i class="fa-solid fa-database"></i> <span id="btn_fetch_text">Getir</span>
+                            </button>
+                        </div>
                     </div>
                     <div class="input-group">
                         <label for="adi_soyadi">Kişi Adı Soyadı</label>
@@ -938,6 +943,10 @@
                         <label>Hekim T.C. Kimlik No</label>
                         <input type="text" id="hekim_tc" class="input-control" readonly>
                     </div>
+                    <div class="input-group full-width">
+                        <label for="db_computer_name">Veritabanı Bilgisayar Adı (SQL Server için)</label>
+                        <input type="text" id="db_computer_name" class="input-control" placeholder="Örn: LAPTOP-FUHDPK9K">
+                    </div>
                 </div>
             </div>
 
@@ -969,7 +978,6 @@
                         <label for="ek8_veli_adres">Veli/Hasta Adres Bilgisi</label>
                         <input type="text" id="ek8_veli_adres" class="input-control" placeholder="Adres">
                     </div>
-                    <!-- Custom Signature Dates (Requested by user: "tarih kısımları ilk gibi olacak") -->
                     <div class="input-group">
                         <label for="ek8_hekim_imza_tarih">ASÇ / Hekim İmza Tarihi</label>
                         <input type="text" id="ek8_hekim_imza_tarih" class="input-control" placeholder="GG.AA.YYYY">
@@ -977,10 +985,6 @@
                     <div class="input-group">
                         <label for="ek8_veli_imza_tarih">Veli İmza Tarihi</label>
                         <input type="text" id="ek8_veli_imza_tarih" class="input-control" placeholder="GG.AA.YYYY">
-                    </div>
-                    <div class="input-group">
-                        <label for="ek8_ism_imza_tarih">TSM/İSM Onay Tarihi</label>
-                        <input type="text" id="ek8_ism_imza_tarih" class="input-control" placeholder="GG.AA.YYYY">
                     </div>
                     <div class="checkbox-grid full-width" style="padding-top: 0.75rem;">
                         <label class="checkbox-item">
@@ -990,50 +994,6 @@
                     </div>
                 </div>
             </div>
-
-            <!-- SECTION 7: EK-12 BİLGİLENDİRME TUTANAĞI BİLGİLERİ -->
-            <div class="form-section hidden-section" id="wrapper_ek12_section">
-                <div class="form-section-header" onclick="toggleSection(this)">
-                    <i class="fa-solid fa-file-invoice section-icon"></i>
-                    <h2>7. Ek-12 Tutanak Bilgileri</h2>
-                    <i class="fa-solid fa-chevron-up toggle-icon"></i>
-                </div>
-                <div class="form-section-body">
-                    <div class="input-group">
-                        <label for="ek12_hasta_adi">Hasta Ad Soyad</label>
-                        <input type="text" id="ek12_hasta_adi" class="input-control" placeholder="Hasta Adı Soyadı">
-                    </div>
-                    <div class="input-group">
-                        <label for="ek12_hasta_tc">Hasta T.C. Kimlik No</label>
-                        <input type="text" id="ek12_hasta_tc" class="input-control" maxlength="11" placeholder="Hasta T.C.">
-                    </div>
-                    <div class="input-group">
-                        <label for="ek12_ism_tsm_adi">İSM/TSM Adı</label>
-                        <input type="text" id="ek12_ism_tsm_adi" class="input-control" placeholder="Örn: Şehitkamil İlçe Sağlık Müdürlüğü">
-                    </div>
-                    <div class="input-group">
-                        <label for="ek12_gorevli_adi">Ziyaretçi Sorumlu Görevli</label>
-                        <input type="text" id="ek12_gorevli_adi" class="input-control" placeholder="Örn: PSİKOLOG ALİ YILMAZ">
-                    </div>
-                    <div class="input-group">
-                        <label for="ek12_calisan_adi">Ziyaretçi İSM/TSM Çalışanı</label>
-                        <input type="text" id="ek12_calisan_adi" class="input-control" placeholder="Örn: ASÇ NURTEN CAN">
-                    </div>
-                    <div class="input-group">
-                        <label for="ek12_gorevli_imza_tarih">Görevli İmza Tarihi</label>
-                        <input type="text" id="ek12_gorevli_imza_tarih" class="input-control" placeholder="GG.AA.YYYY">
-                    </div>
-                    <div class="input-group">
-                        <label for="ek12_calisan_imza_tarih">Çalışan İmza Tarihi</label>
-                        <input type="text" id="ek12_calisan_imza_tarih" class="input-control" placeholder="GG.AA.YYYY">
-                    </div>
-                    <div class="input-group">
-                        <label for="ek12_ism_imza_tarih">TSM/İSM Başkan Onay Tarihi</label>
-                        <input type="text" id="ek12_ism_imza_tarih" class="input-control" placeholder="GG.AA.YYYY">
-                    </div>
-                </div>
-            </div>
-
         </div>
 
         <!-- LIVE PREVIEW PANEL (RIGHT) -->
@@ -1283,7 +1243,7 @@
                 <!-- SIGNATURES BLOCK 3 (DISTRICT DIRECTOR) -->
                 <div style="display: flex; justify-content: space-between; margin-bottom: 3.5rem; page-break-inside: avoid;">
                     <div style="width: 25%; font-size: 10pt; line-height: 1.5;">
-                        Tarih: <span id="prev_ek8_ism_imza_tarih" style="font-weight: bold; border-bottom: 1px dashed #777;">18.06.2026</span>
+                        Tarih: <span id="prev_ek8_ism_imza_tarih" style="font-weight: bold; border-bottom: 1px dashed #777;">…/…/…</span>
                     </div>
                     <div style="width: 35%; text-align: center; font-size: 10pt;">
                         <div style="border-bottom: 1px dashed #777; height: 35px; margin-bottom: 5px;"></div>
@@ -1373,36 +1333,7 @@
         // AİLE HEKİMLİĞİ BİRİMLERİ YAPILANDIRMASI (CONFIG)
         // Yeni birim/hekim/ASÇ bilgilerini buraya kolayca ekleyebilirsiniz.
         // ========================================================
-        const AH_UNITS_CONFIG = [
-            {
-                label: "27.02.277 - Dr. SADIK BAHCİVAN",
-                birimNo: "27.02.277",
-                hekimAdi: "SADIK BAHCİVAN",
-                hekimTc: "63946395432",
-                ascAdi: "A.S.Ç. ÖZLEM BULUT" // Linked ASÇ
-            },
-            {
-                label: "27.02.001 - Dr. AHMET YILMAZ",
-                birimNo: "27.02.001",
-                hekimAdi: "AHMET YILMAZ",
-                hekimTc: "12345678901",
-                ascAdi: "Hemşire ELİF ÇELİK"
-            },
-            {
-                label: "27.02.002 - Dr. AYŞE KAYA",
-                birimNo: "27.02.002",
-                hekimAdi: "AYŞE KAYA",
-                hekimTc: "98765432109",
-                ascAdi: "Ebe FATMA DEMİR"
-            },
-            {
-                label: "27.02.003 - Dr. MEHMET DEMİR",
-                birimNo: "27.02.003",
-                hekimAdi: "MEHMET DEMİR",
-                hekimTc: "11111111110",
-                ascAdi: "A.S.Ç. NURTEN CAN"
-            }
-        ];
+        let AH_UNITS_CONFIG = [];
 
         // Active tab state ('ek2', 'ek8', or 'ek12')
         let activeTab = 'ek2';
@@ -1428,8 +1359,7 @@
             'ek8_veli_tel': { prevId: 'prev_ek8_veli_tel', def: '' },
             'ek8_veli_adres': { prevId: 'prev_ek8_veli_adres', def: 'Şehitkamil / Gaziantep' },
             'ek8_hekim_imza_tarih': { prevId: 'prev_ek8_hekim_imza_tarih', def: '…/…/…' },
-            'ek8_veli_imza_tarih': { prevId: 'prev_ek8_veli_imza_tarih', def: '…/…/…' },
-            'ek8_ism_imza_tarih': { prevId: 'prev_ek8_ism_imza_tarih', def: '…/…/…' }
+            'ek8_veli_imza_tarih': { prevId: 'prev_ek8_veli_imza_tarih', def: '…/…/…' }
         };
 
         const checkboxesList = [
@@ -1439,9 +1369,8 @@
 
         // INITIALIZATION
         window.addEventListener('DOMContentLoaded', () => {
-            setupAhUnitsDropdown();
             setupBindings();
-            loadDefaults();
+            loadConfigFromServer();
             onObjectionSubjectChange();
             setupSyncBetweenForms();
             
@@ -1449,6 +1378,22 @@
             const todayStr = new Date().toLocaleDateString('tr-TR');
             document.getElementById('prev_form_tarihi').textContent = todayStr;
         });
+
+        // Load configuration from local python API
+        async function loadConfigFromServer() {
+            try {
+                const response = await fetch('/api/config');
+                if (response.ok) {
+                    AH_UNITS_CONFIG = await response.json();
+                } else {
+                    console.error("Config response error:", response.status);
+                }
+            } catch (err) {
+                console.error("Config fetch error:", err);
+            }
+            setupAhUnitsDropdown();
+            loadDefaults();
+        }
 
         // POPULATE AH UNITS SELECT DROPDOWN
         function setupAhUnitsDropdown() {
@@ -1472,6 +1417,12 @@
                 // Update readonly inputs in form
                 document.getElementById('hekim_adi_soyadi').value = unit.hekimAdi;
                 document.getElementById('hekim_tc').value = unit.hekimTc;
+                
+                // Update computer name input
+                const compInput = document.getElementById('db_computer_name');
+                if (compInput) {
+                    compInput.value = unit.computerName || '';
+                }
 
                 // Update Ek-2 preview
                 document.getElementById('prev_birim_no').textContent = unit.birimNo;
@@ -1485,6 +1436,102 @@
 
                 // Update Ek-12 preview
                 document.getElementById('prev_ek12_birim_no').textContent = unit.birimNo;
+            }
+        }
+
+        // Helper to format ISO Date (YYYY-MM-DD) to Turkish format (GG.AA.YYYY)
+        function formatDateToTR(isoDate) {
+            if (!isoDate) return '';
+            const parts = isoDate.split('-');
+            if (parts.length === 3) {
+                return `${parts[2]}.${parts[1]}.${parts[0]}`;
+            }
+            return isoDate;
+        }
+
+        // Helper to set input value and trigger 'input' event for preview synchronization
+        function setInputValue(id, val) {
+            const el = document.getElementById(id);
+            if (el) {
+                el.value = val || '';
+                el.dispatchEvent(new Event('input'));
+            }
+        }
+
+        // Fetch patient details from local database
+        async function fetchPatientData() {
+            const tcInput = document.getElementById('tc_no');
+            const tcVal = tcInput.value.trim();
+            const computerInput = document.getElementById('db_computer_name');
+            const computerName = computerInput ? computerInput.value.trim() : '';
+            
+            if (tcVal.length !== 11 || !/^\d+$/.test(tcVal)) {
+                alert("Lütfen geçerli bir 11 haneli T.C. Kimlik Numarası giriniz.");
+                return;
+            }
+
+            const btn = document.getElementById('btn_fetch_db');
+            const btnText = document.getElementById('btn_fetch_text');
+            const originalHtml = btn.innerHTML;
+
+            try {
+                // Disable button and show spinner
+                btn.disabled = true;
+                if (btnText) btnText.textContent = "Aranıyor...";
+                
+                const url = `/api/patient?tc=${encodeURIComponent(tcVal)}&computer=${encodeURIComponent(computerName)}`;
+                const response = await fetch(url);
+                
+                if (!response.ok) {
+                    if (response.status === 404) {
+                        alert("Veritabanında bu T.C. numarasına ait hasta bulunamadı.");
+                    } else {
+                        const errData = await response.json();
+                        alert("Hata: " + (errData.error || "Sunucu hatası oluştu."));
+                    }
+                    return;
+                }
+
+                const patient = await response.json();
+                
+                // Populate Kişi Adı Soyadı
+                const fullName = (patient.AD || '') + ' ' + (patient.SOYAD || '');
+                setInputValue('adi_soyadi', fullName.trim());
+                
+                // Populate Phone number
+                if (patient.TELEFON) {
+                    setInputValue('tel_no', patient.TELEFON);
+                }
+                
+                // Populate Address into Ek-8 veli adresi
+                if (patient.BIRLESTIRILMIS_ADRES) {
+                    setInputValue('ek8_veli_adres', patient.BIRLESTIRILMIS_ADRES);
+                }
+
+                // Populate Mother's TC (Anne TC)
+                if (patient.ANNE_KIMLIK_NO) {
+                    setInputValue('anne_tc', patient.ANNE_KIMLIK_NO);
+                }
+
+                // Populate DOB (Doğum Tarihi)
+                if (patient.DOGUM_TARIHI) {
+                    const formattedDob = formatDateToTR(patient.DOGUM_TARIHI);
+                    setInputValue('dogum_tarihi', formattedDob);
+                }
+                
+                // Set default Onam Veren (Veli/Hasta) name for Ek-8 to the Patient's own name (can be changed manually)
+                setInputValue('ek8_onam_veren_adi', fullName.trim());
+
+                // Trigger Dynamic Objection Subject Checks/Toggles
+                onObjectionSubjectChange();
+                
+            } catch (error) {
+                console.error("Fetch error:", error);
+                alert("Bağlantı hatası: Sunucuya veya veritabanına bağlanılamadı. Lütfen server.py'nin çalıştığından ve veritabanı ayarlarının doğruluğundan emin olun.");
+            } finally {
+                // Restore button
+                btn.disabled = false;
+                btn.innerHTML = originalHtml;
             }
         }
 
@@ -1685,15 +1732,12 @@
                 }
             }
 
-            // 4. Ek-12 Section and Tab Visibility (If any monitoring/vaccine checked)
-            const ek12Section = document.getElementById('wrapper_ek12_section');
+            // 4. Ek-12 Tab Visibility (If any monitoring/vaccine checked)
             const ek12Tab = document.getElementById('tab_ek12');
             const showEk12 = cbGebe || cbLohusa || cbBebek || cbCocuk || cbBagisiklama;
             if (showEk12) {
-                if (ek12Section) ek12Section.classList.remove('hidden-section');
                 if (ek12Tab) ek12Tab.style.display = 'flex';
             } else {
-                if (ek12Section) ek12Section.classList.add('hidden-section');
                 if (ek12Tab) ek12Tab.style.display = 'none';
                 if (activeTab === 'ek12') {
                     switchTab('ek2'); // Force back to Ek-2 if tab hidden
@@ -1791,8 +1835,7 @@
             document.getElementById('ek8_veli_imza_tarih').value = todayStr;
             document.getElementById('prev_ek8_veli_imza_tarih').textContent = todayStr;
 
-            document.getElementById('ek8_ism_imza_tarih').value = todayStr;
-            document.getElementById('prev_ek8_ism_imza_tarih').textContent = todayStr;
+
 
             document.getElementById('ek8_cb_imtina').checked = true;
             document.getElementById('prev_ek8_cb_imtina').textContent = '☑';
@@ -1974,7 +2017,7 @@
                 '{{veli_imza_tarih}}': escapeXml(getVal('ek8_veli_imza_tarih')),
                 '{{veli_adres}}': escapeXml(getVal('ek8_veli_adres')),
                 '{{veli_tel}}': escapeXml(getVal('ek8_veli_tel')),
-                '{{ism_imza_tarih}}': escapeXml(getVal('ek8_ism_imza_tarih')),
+                '{{ism_imza_tarih}}': '…/…/…',
                 '{{cb_imtina}}': getCheck('ek8_cb_imtina')
             };
 
