@@ -89,12 +89,20 @@ class PatientDbHandler(http.server.SimpleHTTPRequestHandler):
             conn = pyodbc.connect(conn_str)
             cursor = conn.cursor()
             
-            # Query to fetch patient + phone + address
+            # Query to fetch patient + phone + address + latest SAT (pregnancy notification date)
             query = """
                 SELECT TOP 1 
                     k.HASTA_KIMLIK_NO, k.AD, k.SOYAD, k.DOGUM_TARIHI, k.ANNE_KIMLIK_NO,
                     t.TELEFON,
-                    a.BIRLESTIRILMIS_ADRES
+                    a.BIRLESTIRILMIS_ADRES,
+                    (
+                        SELECT TOP 1 gb.SON_ADET_TARIHI
+                        FROM GP_GEBELIK_BILDIRIM gb
+                        JOIN GP_MUAYENE m ON m.MUAYENE_ID = gb.MUAYENE
+                        JOIN GP_HASTA_KABUL hk ON hk.HASTA_KABUL_ID = m.HASTA_KABUL
+                        WHERE hk.HASTA_KAYIT = k.HASTA_KAYIT_ID AND gb.SON_ADET_TARIHI IS NOT NULL
+                        ORDER BY gb.GEBELIK_BILDIRIM_ID DESC
+                    ) AS SON_ADET_TARIHI
                 FROM GP_HASTA_KAYIT k
                 LEFT JOIN GP_HASTA_OZLUK o ON o.HASTA_KAYIT = k.HASTA_KAYIT_ID
                 LEFT JOIN DTY_HASTA_OZLUK_TELEFON t ON t.HASTA_OZLUK = o.HASTA_OZLUK_ID
@@ -113,6 +121,9 @@ class PatientDbHandler(http.server.SimpleHTTPRequestHandler):
                 # Format dates and numbers nicely
                 if data.get('DOGUM_TARIHI'):
                     data['DOGUM_TARIHI'] = data['DOGUM_TARIHI'].isoformat() # YYYY-MM-DD
+                
+                if data.get('SON_ADET_TARIHI'):
+                    data['SON_ADET_TARIHI'] = str(data['SON_ADET_TARIHI'])[:10] # YYYY-MM-DD
                 
                 # Format phone number if exists
                 if data.get('TELEFON'):

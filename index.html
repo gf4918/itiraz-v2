@@ -20,8 +20,7 @@
     <script src="template_ek8_docx.js"></script>
     <script src="template_ek12_docx.js"></script>
 
-    <style>
-        /* CSS RESET & VARIABLES */
+    <style>        /* CSS RESET & VARIABLES */
         * {
             box-sizing: border-box;
             margin: 0;
@@ -29,22 +28,25 @@
         }
         
         :root {
-            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
-            --panel-bg: rgba(30, 41, 59, 0.7);
-            --panel-border: rgba(255, 255, 255, 0.08);
-            --accent: #0ea5e9;
-            --accent-hover: #38bdf8;
-            --accent-glow: rgba(14, 165, 233, 0.3);
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --input-bg: rgba(15, 23, 42, 0.6);
-            --input-border: rgba(255, 255, 255, 0.1);
-            --input-focus-border: #0ea5e9;
-            --success: #10b981;
-            --danger: #ef4444;
+            --hue: 220;
+            --bg-gradient: linear-gradient(135deg, hsl(var(--hue), 35%, 7%) 0%, hsl(var(--hue), 25%, 12%) 100%);
+            --panel-bg: hsla(var(--hue), 28%, 13%, 0.6);
+            --panel-border: hsla(var(--hue), 20%, 30%, 0.15);
+            --accent: hsl(200, 95%, 48%);
+            --accent-hover: hsl(200, 100%, 58%);
+            --accent-glow: hsla(200, 95%, 48%, 0.3);
+            --text-main: hsl(var(--hue), 20%, 96%);
+            --text-muted: hsl(var(--hue), 12%, 68%);
+            --input-bg: hsla(var(--hue), 40%, 8%, 0.5);
+            --input-border: hsla(var(--hue), 15%, 25%, 0.25);
+            --input-focus-border: hsl(200, 95%, 48%);
+            --success: hsl(155, 85%, 40%);
+            --success-glow: hsla(155, 85%, 40%, 0.25);
+            --danger: hsl(355, 85%, 55%);
             --font-ui: 'Inter', sans-serif;
             --font-display: 'Outfit', sans-serif;
-            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+            --card-shadow: 0 15px 35px -10px rgba(0, 0, 0, 0.4), 0 0 1px rgba(255, 255, 255, 0.05);
+            --panel-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.6);
         }
 
         body {
@@ -55,40 +57,72 @@
             overflow-x: hidden;
             display: flex;
             flex-direction: column;
+            position: relative;
+        }
+
+        /* Ambient Glow Background Circles */
+        body::before, body::after {
+            content: "";
+            position: fixed;
+            width: 45vw;
+            height: 45vw;
+            border-radius: 50%;
+            background: radial-gradient(circle, hsla(200, 95%, 48%, 0.12) 0%, transparent 70%);
+            filter: blur(90px);
+            z-index: -1;
+            pointer-events: none;
+            animation: floatGlowOne 20s infinite alternate ease-in-out;
+        }
+        body::after {
+            background: radial-gradient(circle, hsla(270, 95%, 50%, 0.07) 0%, transparent 70%);
+            right: -10vw;
+            bottom: -10vw;
+            animation: floatGlowTwo 25s infinite alternate ease-in-out;
+        }
+
+        @keyframes floatGlowOne {
+            0% { transform: translate(-10%, -10%) scale(1); }
+            100% { transform: translate(15%, 15%) scale(1.1); }
+        }
+        @keyframes floatGlowTwo {
+            0% { transform: translate(10%, 10%) scale(1.1); }
+            100% { transform: translate(-15%, -15%) scale(1); }
         }
 
         /* HEADER */
         header {
-            background: rgba(15, 23, 42, 0.8);
-            backdrop-filter: blur(12px);
-            border-bottom: 1px solid var(--panel-border);
-            padding: 1rem 2rem;
+            background: hsla(var(--hue), 35%, 6%, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid hsla(var(--hue), 20%, 30%, 0.2);
+            padding: 0.875rem 2rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
             position: sticky;
             top: 0;
             z-index: 100;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.4);
         }
 
         .header-logo {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.875rem;
         }
 
         .header-logo i {
-            font-size: 1.75rem;
+            font-size: 1.85rem;
             color: var(--accent);
-            text-shadow: 0 0 10px var(--accent-glow);
+            filter: drop-shadow(0 0 10px var(--accent-glow));
         }
 
         .header-logo h1 {
             font-family: var(--font-display);
-            font-size: 1.25rem;
+            font-size: 1.35rem;
             font-weight: 700;
-            letter-spacing: -0.025em;
-            background: linear-gradient(to right, #f8fafc, #94a3b8);
+            letter-spacing: -0.02em;
+            background: linear-gradient(to right, hsl(var(--hue), 20%, 98%), hsl(var(--hue), 10%, 75%));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -107,53 +141,56 @@
             font-family: var(--font-ui);
             font-size: 0.875rem;
             font-weight: 600;
-            padding: 0.625rem 1.25rem;
-            border-radius: 8px;
+            padding: 0.625rem 1.35rem;
+            border-radius: 10px;
             border: 1px solid transparent;
             cursor: pointer;
-            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .btn-primary {
-            background: var(--accent);
+            background: linear-gradient(135deg, var(--accent) 0%, hsl(200, 95%, 40%) 100%);
             color: #ffffff;
-            box-shadow: 0 4px 14px var(--accent-glow);
+            box-shadow: 0 4px 15px var(--accent-glow);
+            border-color: hsla(200, 95%, 60%, 0.1);
         }
 
         .btn-primary:hover {
-            background: var(--accent-hover);
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(14, 165, 233, 0.4);
+            background: linear-gradient(135deg, var(--accent-hover) 0%, var(--accent) 100%);
+            transform: translateY(-1.5px);
+            box-shadow: 0 6px 22px rgba(14, 165, 233, 0.45);
         }
 
         .btn-secondary {
-            background: rgba(255, 255, 255, 0.05);
-            border-color: rgba(255, 255, 255, 0.1);
+            background: hsla(255, 255%, 255%, 0.04);
+            border-color: hsla(255, 255%, 255%, 0.08);
             color: var(--text-main);
         }
 
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-1px);
+            background: hsla(255, 255%, 255%, 0.08);
+            border-color: hsla(255, 255%, 255%, 0.12);
+            transform: translateY(-1.5px);
         }
 
         .btn-success {
-            background: var(--success);
+            background: linear-gradient(135deg, var(--success) 0%, hsl(155, 85%, 33%) 100%);
             color: #ffffff;
-            box-shadow: 0 4px 14px rgba(16, 185, 129, 0.2);
+            box-shadow: 0 4px 15px var(--success-glow);
+            border-color: hsla(155, 85%, 55%, 0.1);
         }
 
         .btn-success:hover {
-            background: #059669;
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+            background: linear-gradient(135deg, hsl(155, 85%, 45%) 0%, var(--success) 100%);
+            transform: translateY(-1.5px);
+            box-shadow: 0 6px 22px rgba(16, 185, 129, 0.35);
         }
 
         /* MAIN CONTAINER */
         .app-container {
             display: flex;
             flex: 1;
-            height: calc(100vh - 65px);
+            height: calc(100vh - 72px);
             overflow: hidden;
         }
 
@@ -164,20 +201,29 @@
             max-width: 650px;
             background: var(--panel-bg);
             border-right: 1px solid var(--panel-border);
-            backdrop-filter: blur(20px);
-            padding: 1.5rem;
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            padding: 1.75rem 1.5rem;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            gap: 1.25rem;
+            gap: 1.35rem;
+            box-shadow: var(--panel-shadow);
         }
 
         .form-section {
-            background: rgba(15, 23, 42, 0.4);
+            background: hsla(var(--hue), 35%, 8%, 0.35);
             border: 1px solid var(--panel-border);
-            border-radius: 12px;
+            border-radius: 16px;
             overflow: hidden;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            box-shadow: var(--card-shadow);
+        }
+
+        .form-section:hover {
+            transform: translateY(-2px);
+            border-color: hsla(200, 95%, 48%, 0.25);
+            box-shadow: 0 20px 40px -15px rgba(0, 0, 0, 0.5), 0 0 15px hsla(200, 95%, 48%, 0.08);
         }
 
         .form-section.hidden-section {
@@ -185,38 +231,46 @@
         }
 
         .form-section-header {
-            padding: 1rem 1.25rem;
-            background: rgba(255, 255, 255, 0.02);
+            padding: 1.125rem 1.5rem;
+            background: hsla(255, 255%, 255%, 0.01);
             border-bottom: 1px solid var(--panel-border);
             display: flex;
             justify-content: flex-start;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.875rem;
             cursor: pointer;
             user-select: none;
+            transition: background 0.2s ease;
         }
 
         .form-section-header:hover {
-            background: rgba(255, 255, 255, 0.04);
+            background: hsla(255, 255%, 255%, 0.03);
+        }
+
+        .form-section:not(.collapsed) .form-section-header {
+            border-left: 3px solid var(--accent);
+            padding-left:calc(1.5rem - 3px);
         }
 
         .form-section-header i.section-icon {
             color: var(--accent);
-            font-size: 1.1rem;
+            font-size: 1.15rem;
+            filter: drop-shadow(0 0 5px var(--accent-glow));
         }
 
         .form-section-header h2 {
             font-family: var(--font-display);
-            font-size: 0.95rem;
+            font-size: 0.975rem;
             font-weight: 600;
             color: var(--text-main);
             flex-grow: 1;
+            letter-spacing: 0.01em;
         }
 
         .form-section-header i.toggle-icon {
             font-size: 0.8rem;
             color: var(--text-muted);
-            transition: transform 0.3s ease;
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .form-section.collapsed .form-section-header i.toggle-icon {
@@ -224,10 +278,10 @@
         }
 
         .form-section-body {
-            padding: 1.25rem;
+            padding: 1.35rem 1.5rem;
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 1rem;
+            gap: 1.15rem;
             transition: max-height 0.3s ease-out;
             max-height: 1200px;
             overflow: hidden;
@@ -247,7 +301,7 @@
         .input-group {
             display: flex;
             flex-direction: column;
-            gap: 0.375rem;
+            gap: 0.45rem;
             transition: all 0.3s ease;
         }
 
@@ -257,9 +311,10 @@
 
         .input-group label {
             font-size: 0.75rem;
-            font-weight: 500;
+            font-weight: 600;
             color: var(--text-muted);
-            letter-spacing: 0.025em;
+            letter-spacing: 0.03em;
+            text-transform: uppercase;
         }
 
         .input-control {
@@ -268,28 +323,30 @@
             background: var(--input-bg);
             border: 1px solid var(--input-border);
             color: var(--text-main);
-            padding: 0.625rem 0.75rem;
-            border-radius: 8px;
+            padding: 0.675rem 0.875rem;
+            border-radius: 10px;
             outline: none;
-            transition: all 0.2s ease;
+            transition: all 0.25s ease;
             width: 100%;
         }
 
         .input-control:focus {
             border-color: var(--input-focus-border);
-            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15);
+            background: hsla(var(--hue), 40%, 6%, 0.85);
+            box-shadow: 0 0 0 3px hsla(200, 95%, 48%, 0.18), 0 4px 12px rgba(0, 0, 0, 0.2);
         }
 
         .input-control[readonly] {
-            background: rgba(15, 23, 42, 0.3);
-            border-color: rgba(255, 255, 255, 0.05);
-            color: #cbd5e1;
+            background: hsla(var(--hue), 25%, 10%, 0.4);
+            border-color: hsla(255, 255%, 255%, 0.04);
+            color: hsl(var(--hue), 10%, 75%);
             cursor: not-allowed;
+            opacity: 0.85;
         }
 
         textarea.input-control {
             resize: vertical;
-            min-height: 80px;
+            min-height: 90px;
         }
 
         select.input-control {
@@ -297,7 +354,7 @@
             appearance: none;
             background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%2394a3b8'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
             background-repeat: no-repeat;
-            background-position: right 0.75rem center;
+            background-position: right 0.875rem center;
             background-size: 1rem;
             padding-right: 2.25rem;
         }
@@ -388,8 +445,8 @@
         /* PREVIEW PANEL (RIGHT) */
         .preview-panel {
             flex: 1;
-            background: #0f172a;
-            padding: 1.5rem;
+            background: hsla(var(--hue), 35%, 5%, 0.95);
+            padding: 1.75rem;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
@@ -399,15 +456,23 @@
             position: relative;
         }
 
-        /* PREVIEW TABS */
+        /* PREVIEW TABS & HEADER BAR */
+        .preview-header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 794px;
+            margin-bottom: 0.5rem;
+            transition: width 0.3s ease;
+        }
+
         .preview-tabs {
             display: flex;
-            background: rgba(15, 23, 42, 0.5);
+            background: hsla(var(--hue), 40%, 6%, 0.6);
             padding: 4px;
-            border-radius: 10px;
+            border-radius: 12px;
             border: 1px solid var(--panel-border);
             width: fit-content;
-            margin-bottom: 0.5rem;
         }
 
         .tab-btn {
@@ -417,10 +482,10 @@
             color: var(--text-muted);
             background: transparent;
             border: none;
-            padding: 0.5rem 1.25rem;
-            border-radius: 8px;
+            padding: 0.5rem 1.35rem;
+            border-radius: 9px;
             cursor: pointer;
-            transition: all 0.25s ease;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex;
             align-items: center;
             gap: 0.5rem;
@@ -428,12 +493,78 @@
 
         .tab-btn:hover {
             color: var(--text-main);
+            background: hsla(255, 255%, 255%, 0.02);
         }
 
         .tab-btn.active {
             color: #ffffff;
+            background: linear-gradient(135deg, var(--accent) 0%, hsl(200, 95%, 43%) 100%);
+            box-shadow: 0 4px 12px var(--accent-glow);
+        }
+
+        /* ZOOM CONTROLS */
+        .zoom-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.65rem;
+            background: hsla(var(--hue), 40%, 6%, 0.6);
+            padding: 0.4rem 1rem;
+            border-radius: 12px;
+            border: 1px solid var(--panel-border);
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .zoom-controls i {
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .zoom-controls i:hover {
+            color: var(--text-main);
+        }
+
+        .zoom-controls input[type="range"] {
+            width: 85px;
+            height: 4px;
+            background: hsla(255, 255%, 255%, 0.1);
+            border-radius: 2px;
+            appearance: none;
+            -webkit-appearance: none;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .zoom-controls input[type="range"]::-webkit-slider-runnable-track {
+            height: 4px;
+        }
+
+        .zoom-controls input[type="range"]::-webkit-slider-thumb {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
             background: var(--accent);
-            box-shadow: 0 4px 10px var(--accent-glow);
+            box-shadow: 0 0 6px var(--accent-glow);
+            margin-top: -4px;
+            transition: transform 0.15s ease, background 0.15s ease;
+        }
+
+        .zoom-controls input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.25);
+            background: var(--accent-hover);
+        }
+
+        .zoom-val {
+            font-family: var(--font-ui);
+            font-weight: 700;
+            color: var(--text-main);
+            min-width: 32px;
+            text-align: right;
+            font-size: 0.775rem;
         }
 
         /* A4 PAGE STYLE */
@@ -442,13 +573,14 @@
             min-height: 1123px; /* Exact 96 DPI A4 height */
             background: #ffffff;
             color: #000000;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 20px 45px -10px rgba(0, 0, 0, 0.4), 0 0 1px rgba(0, 0, 0, 0.2);
             padding: 20mm 15mm;
             font-family: 'Times New Roman', Times, serif;
             font-size: 11pt;
             line-height: 1.35;
             position: relative;
             box-sizing: border-box;
+            transition: transform 0.2s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         /* DOCUMENT PREVIEW TEXT ELEMENTS */
@@ -698,7 +830,7 @@
                 background: #ffffff;
                 color: #000000;
             }
-            header, .form-panel, .preview-tabs {
+            header, .form-panel, .preview-header-bar {
                 display: none !important;
             }
             .preview-panel {
@@ -714,6 +846,8 @@
                 min-height: 0 !important;
                 padding: 0 !important;
                 margin: 0 !important;
+                zoom: 1 !important;
+                transform: none !important;
             }
             .a4-page:not(.print-active) {
                 display: none !important;
@@ -999,17 +1133,26 @@
         <!-- LIVE PREVIEW PANEL (RIGHT) -->
         <div class="preview-panel">
             
-            <!-- PREVIEW TABS -->
-            <div class="preview-tabs">
-                <button class="tab-btn active" id="tab_ek2" onclick="switchTab('ek2')">
-                    <i class="fa-solid fa-file-lines"></i> Ek-2 İtiraz Formu
-                </button>
-                <button class="tab-btn" id="tab_ek8" onclick="switchTab('ek8')" style="display: none;">
-                    <i class="fa-solid fa-signature"></i> Ek-8 Onam Formu
-                </button>
-                <button class="tab-btn" id="tab_ek12" onclick="switchTab('ek12')" style="display: none;">
-                    <i class="fa-solid fa-file-invoice"></i> Ek-12 Tutanak
-                </button>
+            <!-- PREVIEW TABS & ZOOM CONTROLS -->
+            <div class="preview-header-bar">
+                <div class="preview-tabs">
+                    <button class="tab-btn active" id="tab_ek2" onclick="switchTab('ek2')">
+                        <i class="fa-solid fa-file-lines"></i> Ek-2 İtiraz Formu
+                    </button>
+                    <button class="tab-btn" id="tab_ek8" onclick="switchTab('ek8')" style="display: none;">
+                        <i class="fa-solid fa-signature"></i> Ek-8 Onam Formu
+                    </button>
+                    <button class="tab-btn" id="tab_ek12" onclick="switchTab('ek12')" style="display: none;">
+                        <i class="fa-solid fa-file-invoice"></i> Ek-12 Tutanak
+                    </button>
+                </div>
+                
+                <div class="zoom-controls">
+                    <i class="fa-solid fa-magnifying-glass-minus" onclick="adjustZoomStep(-0.05)" title="Küçült"></i>
+                    <input type="range" id="preview_zoom" min="0.6" max="1.1" step="0.05" value="0.9" oninput="onZoomSliderChange(this.value)">
+                    <i class="fa-solid fa-magnifying-glass-plus" onclick="adjustZoomStep(0.05)" title="Büyüt"></i>
+                    <span class="zoom-val" id="zoom_val">90%</span>
+                </div>
             </div>
 
             <!-- TAB 1: EK-2 PREVIEW -->
@@ -1377,6 +1520,9 @@
             // Set form date at top right automatically to today
             const todayStr = new Date().toLocaleDateString('tr-TR');
             document.getElementById('prev_form_tarihi').textContent = todayStr;
+            
+            // Initial zoom
+            applyPreviewZoom(0.9);
         });
 
         // Load configuration from local python API
@@ -1393,6 +1539,7 @@
             }
             setupAhUnitsDropdown();
             loadDefaults();
+            applyPreviewZoom(0.9);
         }
 
         // POPULATE AH UNITS SELECT DROPDOWN
@@ -1437,6 +1584,35 @@
                 // Update Ek-12 preview
                 document.getElementById('prev_ek12_birim_no').textContent = unit.birimNo;
             }
+        }
+
+        // Zoom Functions for Document Preview
+        function applyPreviewZoom(scale) {
+            // Update A4 pages zoom property
+            const pages = document.querySelectorAll('.a4-page');
+            pages.forEach(page => {
+                page.style.zoom = scale;
+            });
+            
+            // Also adjust header bar width dynamically to match scaled A4 pages
+            const headerBar = document.querySelector('.preview-header-bar');
+            if (headerBar) {
+                headerBar.style.width = `${794 * scale}px`;
+            }
+        }
+
+        function onZoomSliderChange(val) {
+            const scale = parseFloat(val);
+            document.getElementById('zoom_val').textContent = `${Math.round(scale * 100)}%`;
+            applyPreviewZoom(scale);
+        }
+
+        function adjustZoomStep(step) {
+            const slider = document.getElementById('preview_zoom');
+            let current = parseFloat(slider.value);
+            let next = Math.max(0.6, Math.min(1.1, current + step));
+            slider.value = next;
+            onZoomSliderChange(next);
         }
 
         // Helper to format ISO Date (YYYY-MM-DD) to Turkish format (GG.AA.YYYY)
@@ -1517,6 +1693,12 @@
                 if (patient.DOGUM_TARIHI) {
                     const formattedDob = formatDateToTR(patient.DOGUM_TARIHI);
                     setInputValue('dogum_tarihi', formattedDob);
+                }
+
+                // Populate SAT (Son Adet Tarihi)
+                if (patient.SON_ADET_TARIHI) {
+                    const formattedSat = formatDateToTR(patient.SON_ADET_TARIHI);
+                    setInputValue('sat', formattedSat);
                 }
                 
                 // Set default Onam Veren (Veli/Hasta) name for Ek-8 to the Patient's own name (can be changed manually)
@@ -1683,6 +1865,12 @@
                     ek12Page.classList.add('print-active');
                 }
                 if (tabEk12Btn) tabEk12Btn.classList.add('active');
+            }
+
+            // Apply current zoom level to newly visible tab page
+            const slider = document.getElementById('preview_zoom');
+            if (slider) {
+                applyPreviewZoom(parseFloat(slider.value));
             }
         }
 
